@@ -34,7 +34,7 @@ public class EmployeeController {
     @GetMapping
     public ResponseEntity<StandardResponse> getAllEmployees() {
         logger.info("Fetching all employees");
-        return new ResponseEntity<>(new StandardResponse(200, "Employees Fetched", employeeService.findAll()), HttpStatus.OK);
+        return new ResponseEntity<>(new StandardResponse(200, "Employees Fetched", employeeService.getAllEmployeeInEmployeeDTOType()), HttpStatus.OK);
     }
 
     /*

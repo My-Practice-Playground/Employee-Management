@@ -80,4 +80,12 @@ public class EmployeeServiceImpl implements EmployeeService {
         List<Employee> employeeList = employeeRepository.findAll();
         return employeeList.stream().map(employee -> mapper.map(employee, EmployeeDTO.class)).toList();
     }
+
+    @Override
+    public List<EmployeeDTO> getAllEmployeeInEmployeeDTOType() {
+        logger.info("Fetching all employees in EmployeeDTO type");
+
+       List<EmployeeDTO> list = employeeRepository.getAllEmployeeInEmployeeDTOType();
+         return list;
+    }
 }
