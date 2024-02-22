@@ -41,12 +41,28 @@ public class VehicleController {
                 new StandardResponse(200, "Vehicles Fetched", vehicleService.findAll()), HttpStatus.OK);
     }
 
+    /*
+    Get vehicle by id
+    */
     @GetMapping("/{id}")
     public ResponseEntity<StandardResponse> getVehicleById(@PathVariable Long id) {
         logger.info("Fetching vehicle with id: {}", id);
 
         return new ResponseEntity<>(
                 new StandardResponse(200, "Vehicle Fetched", vehicleService.findById(id)), HttpStatus.OK);
+    }
+
+    /*
+    Delete vehicle by id
+     */
+    @DeleteMapping("/{id}")
+    public ResponseEntity<StandardResponse> deleteVehicle(@PathVariable Long id) {
+        logger.info("Deleting vehicle with id: {}", id);
+
+        vehicleService.delete(id);
+        return new ResponseEntity<>(
+                new StandardResponse(200, "Vehicle Deleted", null), HttpStatus.OK);
+
     }
 
 

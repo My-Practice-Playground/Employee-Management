@@ -39,8 +39,14 @@ public class VehicleServiceImpl  implements VehicleService {
     }
 
     @Override
-    public void delete(Long id) {
+    public void delete(Long id)throws VehicleNotFoundException {
+        logger.info("Deleting vehicle with id: {}", id);
 
+        if (vehicleRepository.existsById(id)) {
+            vehicleRepository.deleteById(id);
+            return;
+        }
+        throw new VehicleNotFoundException("Vehicle not found");
     }
 
     @Override
