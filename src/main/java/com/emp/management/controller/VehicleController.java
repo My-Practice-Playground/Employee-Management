@@ -7,11 +7,9 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("api/vehicles")
@@ -20,11 +18,28 @@ public class VehicleController {
     private static final Logger logger = LoggerFactory.getLogger(VehicleController.class);
     private final VehicleService vehicleService;
 
-
+    /*
+    Save vehicle
+     */
     @PostMapping
     public ResponseEntity<StandardResponse> saveVehicle(@RequestBody @Valid VehicleDTO vehicleDTO) {
         logger.info("Vehicle: {}", vehicleDTO);
 
-        return ResponseEntity.ok(new StandardResponse(200, "Vehicle Saved",vehicleDTO));
+        vehicleService.save(vehicleDTO);
+        return new ResponseEntity<>(
+                new StandardResponse(200, "Vehicle Saved", null), HttpStatus.CREATED);
     }
+
+    /*
+    Get all vehicles
+     */
+    @GetMapping
+    public ResponseEntity<StandardResponse> getAllVehicles() {
+        logger.info("Fetching all vehicles");
+
+        return new ResponseEntity<>(
+                new StandardResponse(200, "Vehicles Fetched", vehicleService.findAll()), HttpStatus.OK);
+    }
+
+
 }

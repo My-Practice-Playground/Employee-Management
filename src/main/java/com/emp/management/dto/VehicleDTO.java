@@ -27,5 +27,3 @@ public class VehicleDTO {
 
     private EmployeeDTO employee;
 }
-
-//regex for sql date ->
