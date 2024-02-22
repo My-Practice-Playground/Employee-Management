@@ -48,6 +48,8 @@ public class VehicleServiceImpl  implements VehicleService {
 
     @Override
     public List<VehicleDTO> findAll() {
+        logger.info("Fetching all vehicles");
+
         List<Vehicle> all = vehicleRepository.findAll();
         return all.stream().map(
                 vehicle -> mapper.map(vehicle, VehicleDTO.class)
