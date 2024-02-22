@@ -24,13 +24,8 @@ public class EmployeeController {
     @PostMapping
     public ResponseEntity<StandardResponse> saveEmployee(@RequestBody @Valid EmployeeDTO employee) {
         logger.info("Employee: {}", employee);
-        try {
-            employeeService.save(employee);
-            return new ResponseEntity<>(new StandardResponse(200, "Employee Saved", null), HttpStatus.CREATED);
-        } catch (RuntimeException runtimeException) {
-            logger.error(runtimeException.getMessage());
-            return new ResponseEntity<>(new StandardResponse(400, runtimeException.getMessage(), null), HttpStatus.BAD_REQUEST);
-        }
+        employeeService.save(employee);
+        return new ResponseEntity<>(new StandardResponse(200, "Employee Saved", null), HttpStatus.CREATED);
     }
 
     /*
@@ -48,6 +43,7 @@ public class EmployeeController {
     @DeleteMapping("/{id}")
     public ResponseEntity<StandardResponse> deleteEmployee(@PathVariable Long id) {
         logger.info("Deleting employee with id: {}", id);
+
         try {
             employeeService.delete(id);
             return new ResponseEntity<>(new StandardResponse(200, "Employee Deleted", null), HttpStatus.OK);
@@ -63,6 +59,7 @@ public class EmployeeController {
     @GetMapping("/{id}")
     public ResponseEntity<StandardResponse> getEmployeeById(@PathVariable Long id) {
         logger.info("Fetching employee with id: {}", id);
+
         try {
             return new ResponseEntity<>(new StandardResponse(200, "Employee Fetched", employeeService.findById(id)), HttpStatus.OK);
         } catch (RuntimeException runtimeException) {
@@ -74,10 +71,10 @@ public class EmployeeController {
     /*
     Update employee by id
      */
-
     @PutMapping("/{id}")
     public ResponseEntity<StandardResponse> updateEmployee(@PathVariable Long id, @RequestBody @Valid EmployeeDTO employee) {
         logger.info("Updating employee with id: {}", id);
+
         try {
             employee.setId(id);
             employeeService.update(employee);
