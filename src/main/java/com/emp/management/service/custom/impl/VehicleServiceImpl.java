@@ -5,6 +5,7 @@ import com.emp.management.entity.Vehicle;
 import com.emp.management.repository.EmployeeRepository;
 import com.emp.management.repository.VehicleRepository;
 import com.emp.management.service.custom.VehicleService;
+import com.emp.management.util.exception.VehicleNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.slf4j.Logger;
@@ -13,6 +14,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -42,8 +44,14 @@ public class VehicleServiceImpl  implements VehicleService {
     }
 
     @Override
-    public VehicleDTO findById(Long id) {
-        return null;
+    public VehicleDTO findById(Long id) throws VehicleNotFoundException{
+        logger.info("Fetching vehicle with id: {}", id);
+
+        Optional<Vehicle> byId = vehicleRepository.findById(id);
+        if (byId.isPresent()) {
+            return mapper.map(byId.get(), VehicleDTO.class);
+        }
+        throw new VehicleNotFoundException("Vehicle not found");
     }
 
     @Override

@@ -41,5 +41,13 @@ public class VehicleController {
                 new StandardResponse(200, "Vehicles Fetched", vehicleService.findAll()), HttpStatus.OK);
     }
 
+    @GetMapping("/{id}")
+    public ResponseEntity<StandardResponse> getVehicleById(@PathVariable Long id) {
+        logger.info("Fetching vehicle with id: {}", id);
+
+        return new ResponseEntity<>(
+                new StandardResponse(200, "Vehicle Fetched", vehicleService.findById(id)), HttpStatus.OK);
+    }
+
 
 }

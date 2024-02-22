@@ -1,5 +1,6 @@
 package com.emp.management.advicer;
 
+import com.emp.management.util.exception.VehicleNotFoundException;
 import com.emp.management.util.payload.respond.StandardResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -9,6 +10,7 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
 import static org.springframework.http.HttpStatus.BAD_REQUEST;
+import static org.springframework.http.HttpStatus.NOT_FOUND;
 
 @ControllerAdvice
 public class RestExceptionHandler {
@@ -29,6 +31,17 @@ public class RestExceptionHandler {
     @ExceptionHandler
     public ResponseEntity<StandardResponse> handleException(RuntimeException e) {
         logger.info(e.getMessage());
-        return new ResponseEntity<>(new StandardResponse(400, e.getMessage(), null), BAD_REQUEST);
+
+        return new ResponseEntity<>(
+                new StandardResponse(400, e.getMessage(), null), BAD_REQUEST);
+    }
+
+    // Global Exception handler for VehicleNotFoundException
+    @ExceptionHandler
+    public ResponseEntity<StandardResponse> handleException(VehicleNotFoundException e) {
+        logger.info(e.getMessage());
+
+        return new ResponseEntity<>(
+                new StandardResponse(404, e.getMessage(), null), NOT_FOUND);
     }
 }
