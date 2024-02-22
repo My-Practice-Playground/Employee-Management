@@ -24,6 +24,7 @@ public class EmployeeController {
     @PostMapping
     public ResponseEntity<StandardResponse> saveEmployee(@RequestBody @Valid EmployeeDTO employee) {
         logger.info("Employee: {}", employee);
+
         employeeService.save(employee);
         return new ResponseEntity<>(new StandardResponse(200, "Employee Saved", null), HttpStatus.CREATED);
     }
@@ -34,6 +35,7 @@ public class EmployeeController {
     @GetMapping
     public ResponseEntity<StandardResponse> getAllEmployees() {
         logger.info("Fetching all employees");
+
         return new ResponseEntity<>(new StandardResponse(200, "Employees Fetched", employeeService.getAllEmployeeInEmployeeDTOType()), HttpStatus.OK);
     }
 

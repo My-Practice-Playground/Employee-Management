@@ -29,7 +29,6 @@ public class RestExceptionHandler {
     @ExceptionHandler
     public ResponseEntity<StandardResponse> handleException(RuntimeException e) {
         logger.info(e.getMessage());
-
         return new ResponseEntity<>(new StandardResponse(400, e.getMessage(), null), BAD_REQUEST);
     }
 }

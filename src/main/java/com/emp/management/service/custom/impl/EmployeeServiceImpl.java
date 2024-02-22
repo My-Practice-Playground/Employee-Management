@@ -85,7 +85,6 @@ public class EmployeeServiceImpl implements EmployeeService {
     public List<EmployeeDTO> getAllEmployeeInEmployeeDTOType() {
         logger.info("Fetching all employees in EmployeeDTO type");
 
-       List<EmployeeDTO> list = employeeRepository.getAllEmployeeInEmployeeDTOType();
-         return list;
+        return employeeRepository.getAllEmployeeInEmployeeDTOType();
     }
 }

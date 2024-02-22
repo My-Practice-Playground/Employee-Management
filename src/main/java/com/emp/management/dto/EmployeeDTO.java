@@ -34,5 +34,4 @@ public class EmployeeDTO {
 
     private VehicleDTO vehicle;
 
-
 }
