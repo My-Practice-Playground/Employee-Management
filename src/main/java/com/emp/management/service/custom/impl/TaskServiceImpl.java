@@ -1,43 +1,75 @@
 package com.emp.management.service.custom.impl;
 
+import com.emp.management.dto.TaskDTO;
 import com.emp.management.entity.Task;
-import com.emp.management.repository.EmployeeRepository;
 import com.emp.management.repository.TaskRepository;
 import com.emp.management.service.custom.TaskService;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
 public class TaskServiceImpl implements TaskService {
+    private static final Logger logger = LoggerFactory.getLogger(TaskServiceImpl.class);
 
     private final ModelMapper mapper;
     private final TaskRepository taskRepository;
-    @Override
-    public void save(Task data) {
 
+
+    @Transactional
+    @Override
+    public void save(TaskDTO data) {
+        logger.info("Task: {}", data);
+
+        taskRepository.save(mapper.map(data, Task.class));
     }
 
     @Override
-    public void update(Task data) {
+    public void update(TaskDTO data) {
+        logger.info("Task: {}", data);
 
+        taskRepository.save(mapper.map(data, Task.class));
     }
 
     @Override
     public void delete(Long id) {
+        logger.info("Deleting task with id: {}", id);
+
+        Optional<Task> taskById = taskRepository.findById(id);
+        if (taskById.isPresent()) {
+            taskRepository.delete(taskById.get());
+            return;
+        }
+        throw new RuntimeException("Task not found for id: " + id);
 
     }
 
     @Override
-    public Task findById(Long id) {
-        return null;
+    public TaskDTO findById(Long id) {
+        logger.info("Fetching task with id: {}", id);
+
+        Optional<Task> taskById = taskRepository.findById(id);
+        if (taskById.isPresent()) {
+            return mapper.map(taskById.get(), TaskDTO.class);
+        }
+        throw new RuntimeException("Task not found for id: " + id);
     }
 
     @Override
-    public List<Task> findAll() {
-        return null;
+    public List<TaskDTO> findAll() {
+        logger.info("Fetching all tasks");
+
+        List<Task> taskList = taskRepository.findAll();
+        return taskList.stream().map(
+                task -> mapper.map(task, TaskDTO.class)
+        ).collect(Collectors.toList());
     }
 }
