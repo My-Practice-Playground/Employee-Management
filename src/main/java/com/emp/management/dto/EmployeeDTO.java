@@ -5,7 +5,6 @@ import jakarta.validation.constraints.Pattern;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.RequiredArgsConstructor;
 
 import java.sql.Date;
 
@@ -23,6 +22,7 @@ public class EmployeeDTO {
     private String email;
     @NotNull(message = "Date of birth cannot be null")
     private Date dob;
+    private VehicleDTO vehicle;
 
     public EmployeeDTO(Long id, String firstname, String lastname, String email, Date dob) {
         this.id = id;
@@ -31,7 +31,5 @@ public class EmployeeDTO {
         this.email = email;
         this.dob = dob;
     }
-
-    private VehicleDTO vehicle;
 
 }
