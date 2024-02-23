@@ -19,9 +19,9 @@ import org.springframework.web.bind.annotation.*;
 public class EmployeeController {
     private final EmployeeService employeeService;
 
-    /*
-    Save employee
-    */
+/*
+SAVE EMPLOYEE
+**/
     @PostMapping
     public ResponseEntity<StandardResponse> saveEmployee(@RequestBody @Valid EmployeeDTO employee) {
         log.info("Employee: {}", employee);
@@ -31,9 +31,9 @@ public class EmployeeController {
                 new StandardResponse(200, "Employee Saved", null), HttpStatus.CREATED);
     }
 
-    /*
-    Get all employees
-     */
+/*
+GET ALL EMPLOYEES
+**/
     @GetMapping
     public ResponseEntity<StandardResponse> getAllEmployees() {
         log.info("Fetching all employees");
@@ -43,9 +43,9 @@ public class EmployeeController {
                         employeeService.getAllEmployeeInEmployeeDTOType()), HttpStatus.OK);
     }
 
-    /*
-    Delete Employee by id
-     */
+/*
+DELETE EMPLOYEE BY ID
+**/
     @DeleteMapping("/{id}")
     public ResponseEntity<StandardResponse> deleteEmployee(@PathVariable Long id) {
         log.info("Deleting employee with id: {}", id);
@@ -56,9 +56,9 @@ public class EmployeeController {
 
     }
 
-    /*
-    Get employee by id
-    */
+/*
+GET EMPLOYEE BY ID
+**/
     @GetMapping("/{id}")
     public ResponseEntity<StandardResponse> getEmployeeById(@PathVariable Long id) {
         log.info("Fetching employee with id: {}", id);
@@ -67,9 +67,9 @@ public class EmployeeController {
                 new StandardResponse(200, "Employee Fetched", employeeService.findById(id)), HttpStatus.OK);
     }
 
-    /*
-    Update employee by id
-     */
+/*
+UPDATE EMPLOYEE BY ID
+**/
     @PutMapping("/{id}")
     public ResponseEntity<StandardResponse> updateEmployee(@PathVariable Long id, @RequestBody @Valid EmployeeDTO employee) {
         log.info("Updating employee with id: {}", id);

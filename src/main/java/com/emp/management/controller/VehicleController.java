@@ -18,9 +18,9 @@ import org.springframework.web.bind.annotation.*;
 public class VehicleController {
     private final VehicleService vehicleService;
 
-    /*
-    Save vehicle
-     */
+/*
+SAVE VEHICLE
+**/
     @PostMapping
     public ResponseEntity<StandardResponse> saveVehicle(@RequestBody @Valid VehicleDTO vehicleDTO) {
         log.info("Vehicle: {}", vehicleDTO);
@@ -30,9 +30,9 @@ public class VehicleController {
                 new StandardResponse(200, "Vehicle Saved", null), HttpStatus.CREATED);
     }
 
-    /*
-    Get all vehicles
-     */
+/*
+GET ALL VEHICLES0
+**/
     @GetMapping
     public ResponseEntity<StandardResponse> getAllVehicles() {
         log.info("Fetching all vehicles");
@@ -41,9 +41,9 @@ public class VehicleController {
                 new StandardResponse(200, "Vehicles Fetched", vehicleService.findAll()), HttpStatus.OK);
     }
 
-    /*
-    Get vehicle by id
-    */
+/*
+GET VEHICLE BY ID
+**/
     @GetMapping("/{id}")
     public ResponseEntity<StandardResponse> getVehicleById(@PathVariable Long id) {
         log.info("Fetching vehicle with id: {}", id);
@@ -52,9 +52,9 @@ public class VehicleController {
                 new StandardResponse(200, "Vehicle Fetched", vehicleService.findById(id)), HttpStatus.OK);
     }
 
-    /*
-    Delete vehicle by id
-     */
+/*
+DELETE VEHICLE
+* */
     @DeleteMapping("/{id}")
     public ResponseEntity<StandardResponse> deleteVehicle(@PathVariable Long id) {
         log.info("Deleting vehicle with id: {}", id);
@@ -64,6 +64,5 @@ public class VehicleController {
                 new StandardResponse(200, "Vehicle Deleted", null), HttpStatus.OK);
 
     }
-
 
 }

@@ -19,6 +19,9 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 public class ApplicationConfiguration {
     private final UserRepository userRepository;
 
+/*
+USER DETAILS SERVICE BEAN
+* */
     @Bean
     public UserDetailsService userDetailsService() {
         return username -> {
@@ -33,6 +36,9 @@ public class ApplicationConfiguration {
         };
     }
 
+/*
+AUTHENTICATION PROVIDER BEAN
+* */
     @Bean
     public AuthenticationProvider authenticationProvider() {
         DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
@@ -41,11 +47,17 @@ public class ApplicationConfiguration {
         return provider;
     }
 
+/*
+PASSWORD ENCODER FOR ENCODING PASSWORDS
+* */
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
 
+/*
+AUTHENTICATION MANAGER BEAN
+* */
     @Bean
     public AuthenticationManager authenticationManager(AuthenticationConfiguration configuration) throws Exception {
         return configuration.getAuthenticationManager();

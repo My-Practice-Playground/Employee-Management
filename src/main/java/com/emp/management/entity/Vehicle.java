@@ -20,7 +20,7 @@ public class Vehicle {
     private String model;
     private Date manufactureDate;
     private String color;
-    @OneToOne(mappedBy = "vehicle")
+    @OneToOne(mappedBy = "vehicle",fetch = FetchType.LAZY)
     @ToString.Exclude
     private Employee employee;
 }

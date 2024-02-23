@@ -1,0 +1,51 @@
+package com.emp.management.configuration;
+
+import com.emp.management.configuration.filter.JwtAuthenticationFilter;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
+import org.springframework.security.authentication.AuthenticationProvider;
+import org.springframework.security.config.Customizer;
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
+import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
+import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+
+@Configuration
+@EnableWebSecurity
+@EnableMethodSecurity
+@RequiredArgsConstructor
+@Slf4j
+public class SecurityConfiguration {
+    private final AuthenticationProvider authenticationProvider;
+    private  final JwtAuthenticationFilter jwtAuthenticationFilter;
+
+/*
+SECURITY FILTER CHAIN
+**/
+    @Bean
+    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+        http.csrf(AbstractHttpConfigurer::disable);
+        http.authorizeHttpRequests(
+                auth ->
+                        auth.requestMatchers("/auth/**").permitAll()
+                                .requestMatchers(HttpMethod.DELETE,"/api/vehicles/**").hasRole("ADMIN")
+                                .requestMatchers(HttpMethod.DELETE,"/api/employees/**").hasRole("ADMIN")
+                                .requestMatchers(HttpMethod.DELETE,"/api/tasks/**").hasRole("ADMIN")
+                                .anyRequest().authenticated()
+                )
+                .httpBasic(Customizer.withDefaults())
+                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                .authenticationProvider(authenticationProvider)
+                .addFilterBefore(jwtAuthenticationFilter,UsernamePasswordAuthenticationFilter.class);
+        return http.build();
+    }
+}
+
+//grant acces to ADMIN role for DELETE request
+//.antMatchers(HttpMethod.DELETE,"/api/v1/demo/**").hasRole("ADMIN")

@@ -17,6 +17,9 @@ import org.springframework.web.bind.annotation.*;
 public class TaskController {
     private final TaskService taskService;
 
+/*
+SAVE TASK
+*/
     @PostMapping
     public ResponseEntity<StandardResponse> saveTask(@RequestBody @Valid TaskDTO taskDTO) {
         log.info("Task: {}", taskDTO);
@@ -26,6 +29,9 @@ public class TaskController {
                 new StandardResponse(200, "Task Saved", null));
     }
 
+/*
+DELETE TASK
+* */
     @DeleteMapping("/{id}")
     public ResponseEntity<StandardResponse> deleteTask(@PathVariable Long id) {
         log.info("Deleting task with id: {}", id);
@@ -35,6 +41,9 @@ public class TaskController {
                 new StandardResponse(200, "Task Deleted", null));
     }
 
+/*
+GET TASK BY ID
+* */
     @GetMapping("/{id}")
     public ResponseEntity<StandardResponse> getTaskById(@PathVariable Long id) {
         log.info("Fetching task with id: {}", id);
@@ -43,6 +52,9 @@ public class TaskController {
                 new StandardResponse(200, "Task Fetched", taskService.findById(id)));
     }
 
+/*
+GET ALL TASKS
+* */
     @GetMapping
     public ResponseEntity<StandardResponse> getAllTasks() {
         log.info("Fetching all tasks");
@@ -51,6 +63,9 @@ public class TaskController {
                 new StandardResponse(200, "Tasks Fetched", taskService.findAll()));
     }
 
+/*
+UPDATE TASK
+* */
     @PutMapping
     public ResponseEntity<StandardResponse> updateTask(@RequestBody @Valid TaskDTO taskDTO) {
         log.info("Task: {}", taskDTO);
