@@ -5,6 +5,7 @@ import com.emp.management.entity.Task;
 import com.emp.management.repository.TaskRepository;
 import com.emp.management.service.custom.TaskService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -14,11 +15,10 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
-
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class TaskServiceImpl implements TaskService {
-    private static final Logger logger = LoggerFactory.getLogger(TaskServiceImpl.class);
 
     private final ModelMapper mapper;
     private final TaskRepository taskRepository;
@@ -27,21 +27,21 @@ public class TaskServiceImpl implements TaskService {
     @Transactional
     @Override
     public void save(TaskDTO data) {
-        logger.info("Task: {}", data);
+        log.info("Task: {}", data);
 
         taskRepository.save(mapper.map(data, Task.class));
     }
 
     @Override
     public void update(TaskDTO data) {
-        logger.info("Task: {}", data);
+        log.info("Task: {}", data);
 
         taskRepository.save(mapper.map(data, Task.class));
     }
 
     @Override
     public void delete(Long id) {
-        logger.info("Deleting task with id: {}", id);
+        log.info("Deleting task with id: {}", id);
 
         Optional<Task> taskById = taskRepository.findById(id);
         if (taskById.isPresent()) {
@@ -54,7 +54,7 @@ public class TaskServiceImpl implements TaskService {
 
     @Override
     public TaskDTO findById(Long id) {
-        logger.info("Fetching task with id: {}", id);
+        log.info("Fetching task with id: {}", id);
 
         Optional<Task> taskById = taskRepository.findById(id);
         if (taskById.isPresent()) {
@@ -65,7 +65,7 @@ public class TaskServiceImpl implements TaskService {
 
     @Override
     public List<TaskDTO> findAll() {
-        logger.info("Fetching all tasks");
+        log.info("Fetching all tasks");
 
         List<Task> taskList = taskRepository.findAll();
         return taskList.stream().map(

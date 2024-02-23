@@ -5,17 +5,17 @@ import com.emp.management.service.custom.VehicleService;
 import com.emp.management.util.payload.respond.StandardResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
+@Slf4j
 @RestController
 @RequestMapping("api/vehicles")
 @RequiredArgsConstructor
 public class VehicleController {
-    private static final Logger logger = LoggerFactory.getLogger(VehicleController.class);
     private final VehicleService vehicleService;
 
     /*
@@ -23,7 +23,7 @@ public class VehicleController {
      */
     @PostMapping
     public ResponseEntity<StandardResponse> saveVehicle(@RequestBody @Valid VehicleDTO vehicleDTO) {
-        logger.info("Vehicle: {}", vehicleDTO);
+        log.info("Vehicle: {}", vehicleDTO);
 
         vehicleService.save(vehicleDTO);
         return new ResponseEntity<>(
@@ -35,7 +35,7 @@ public class VehicleController {
      */
     @GetMapping
     public ResponseEntity<StandardResponse> getAllVehicles() {
-        logger.info("Fetching all vehicles");
+        log.info("Fetching all vehicles");
 
         return new ResponseEntity<>(
                 new StandardResponse(200, "Vehicles Fetched", vehicleService.findAll()), HttpStatus.OK);
@@ -46,7 +46,7 @@ public class VehicleController {
     */
     @GetMapping("/{id}")
     public ResponseEntity<StandardResponse> getVehicleById(@PathVariable Long id) {
-        logger.info("Fetching vehicle with id: {}", id);
+        log.info("Fetching vehicle with id: {}", id);
 
         return new ResponseEntity<>(
                 new StandardResponse(200, "Vehicle Fetched", vehicleService.findById(id)), HttpStatus.OK);
@@ -57,7 +57,7 @@ public class VehicleController {
      */
     @DeleteMapping("/{id}")
     public ResponseEntity<StandardResponse> deleteVehicle(@PathVariable Long id) {
-        logger.info("Deleting vehicle with id: {}", id);
+        log.info("Deleting vehicle with id: {}", id);
 
         vehicleService.delete(id);
         return new ResponseEntity<>(

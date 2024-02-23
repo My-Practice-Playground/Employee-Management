@@ -5,21 +5,21 @@ import com.emp.management.service.custom.TaskService;
 import com.emp.management.util.payload.respond.StandardResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
+@Slf4j
 @RestController
 @RequestMapping("api/tasks")
 @RequiredArgsConstructor
 public class TaskController {
-    private static final Logger logger = LoggerFactory.getLogger(TaskController.class);
     private final TaskService taskService;
 
     @PostMapping
     public ResponseEntity<StandardResponse> saveTask(@RequestBody @Valid TaskDTO taskDTO) {
-        logger.info("Task: {}", taskDTO);
+        log.info("Task: {}", taskDTO);
 
         taskService.save(taskDTO);
         return ResponseEntity.ok(
@@ -28,7 +28,7 @@ public class TaskController {
 
     @DeleteMapping("/{id}")
     public ResponseEntity<StandardResponse> deleteTask(@PathVariable Long id) {
-        logger.info("Deleting task with id: {}", id);
+        log.info("Deleting task with id: {}", id);
 
         taskService.delete(id);
         return ResponseEntity.ok(
@@ -37,7 +37,7 @@ public class TaskController {
 
     @GetMapping("/{id}")
     public ResponseEntity<StandardResponse> getTaskById(@PathVariable Long id) {
-        logger.info("Fetching task with id: {}", id);
+        log.info("Fetching task with id: {}", id);
 
         return ResponseEntity.ok(
                 new StandardResponse(200, "Task Fetched", taskService.findById(id)));
@@ -45,7 +45,7 @@ public class TaskController {
 
     @GetMapping
     public ResponseEntity<StandardResponse> getAllTasks() {
-        logger.info("Fetching all tasks");
+        log.info("Fetching all tasks");
 
         return ResponseEntity.ok(
                 new StandardResponse(200, "Tasks Fetched", taskService.findAll()));
@@ -53,7 +53,7 @@ public class TaskController {
 
     @PutMapping
     public ResponseEntity<StandardResponse> updateTask(@RequestBody @Valid TaskDTO taskDTO) {
-        logger.info("Task: {}", taskDTO);
+        log.info("Task: {}", taskDTO);
 
         taskService.update(taskDTO);
         return ResponseEntity.ok(

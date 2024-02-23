@@ -7,6 +7,7 @@ import com.emp.management.repository.VehicleRepository;
 import com.emp.management.service.custom.VehicleService;
 import com.emp.management.util.exception.VehicleNotFoundException;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -17,17 +18,17 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class VehicleServiceImpl  implements VehicleService {
-    private static final Logger logger = LoggerFactory.getLogger(VehicleServiceImpl.class);
     private final ModelMapper mapper;
     private final VehicleRepository vehicleRepository;
 
     @Transactional
     @Override
     public void save(VehicleDTO data) {
-        logger.info("Vehicle: {}", data);
+        log.info("Vehicle: {}", data);
 
         Vehicle vehicle = mapper.map(data, Vehicle.class);
         vehicleRepository.save(vehicle);
@@ -40,7 +41,7 @@ public class VehicleServiceImpl  implements VehicleService {
 
     @Override
     public void delete(Long id)throws VehicleNotFoundException {
-        logger.info("Deleting vehicle with id: {}", id);
+        log.info("Deleting vehicle with id: {}", id);
 
         if (vehicleRepository.existsById(id)) {
             vehicleRepository.deleteById(id);
@@ -51,7 +52,7 @@ public class VehicleServiceImpl  implements VehicleService {
 
     @Override
     public VehicleDTO findById(Long id) throws VehicleNotFoundException{
-        logger.info("Fetching vehicle with id: {}", id);
+        log.info("Fetching vehicle with id: {}", id);
 
         Optional<Vehicle> byId = vehicleRepository.findById(id);
         if (byId.isPresent()) {
@@ -62,7 +63,7 @@ public class VehicleServiceImpl  implements VehicleService {
 
     @Override
     public List<VehicleDTO> findAll() {
-        logger.info("Fetching all vehicles");
+        log.info("Fetching all vehicles");
 
         List<Vehicle> all = vehicleRepository.findAll();
         return all.stream().map(
