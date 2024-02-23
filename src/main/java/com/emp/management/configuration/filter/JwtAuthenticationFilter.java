@@ -33,8 +33,7 @@ SECURITY FILTER FOR JWT
     protected void doFilterInternal(@NonNull HttpServletRequest request, @NonNull HttpServletResponse response, @NonNull FilterChain filterChain) throws ServletException, IOException {
         log.info("Processing authentication for '{}'", request.getRequestURL());
 
-        String HEADER = "Authorization";
-        final String header = request.getHeader(HEADER);
+        final String header = request.getHeader("Authorization");
         String jwt = null;
         String email = null;
         if (header != null && header.startsWith("Bearer ")) {

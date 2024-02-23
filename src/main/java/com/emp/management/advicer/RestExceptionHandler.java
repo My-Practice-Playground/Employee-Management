@@ -16,7 +16,9 @@ import static org.springframework.http.HttpStatus.NOT_FOUND;
 @ControllerAdvice
 public class RestExceptionHandler {
 
-    // Global Exception handler for MethodArgumentNotValidException
+/*
+GLOBAL EXCEPTION HANDLER FOR METHOD ARGUMENT NOT VALID EXCEPTION
+ */
     @ExceptionHandler
     public ResponseEntity<StandardResponse> handleException(MethodArgumentNotValidException e) {
        log.info(e.getBindingResult().getFieldError().getDefaultMessage());
@@ -27,7 +29,9 @@ public class RestExceptionHandler {
         );
     }
 
-    // Global Exception handler for RuntimeException
+/*
+GLOBAL EXCEPTION HANDLER FOR RUNTIME EXCEPTION
+* */
     @ExceptionHandler
     public ResponseEntity<StandardResponse> handleException(RuntimeException e) {
         log.info(e.getMessage());
@@ -36,7 +40,9 @@ public class RestExceptionHandler {
                 new StandardResponse(400, e.getMessage(), null), BAD_REQUEST);
     }
 
-    // Global Exception handler for VehicleNotFoundException
+/*
+GLOBAL EXCEPTION HANDLER FOR VEHICLE NOT FOUND EXCEPTION
+* */
     @ExceptionHandler
     public ResponseEntity<StandardResponse> handleException(VehicleNotFoundException e) {
         log.info(e.getMessage());
