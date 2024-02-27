@@ -36,11 +36,11 @@ SECURITY FILTER CHAIN
         http.csrf(AbstractHttpConfigurer::disable);
         http.authorizeHttpRequests(
                 auth ->
-                        auth.requestMatchers("/auth/**").permitAll()
-                                .requestMatchers(HttpMethod.DELETE,"/api/vehicles/**").hasRole("ADMIN")
-                                .requestMatchers(HttpMethod.DELETE,"/api/employees/**").hasRole("ADMIN")
-                                .requestMatchers("/api/tasks/**").authenticated()
-                                .anyRequest().authenticated()
+                        auth.requestMatchers("/**").permitAll()
+//                                .requestMatchers(HttpMethod.DELETE,"/api/vehicles/**").hasRole("ADMIN")
+//                                .requestMatchers(HttpMethod.DELETE,"/api/employees/**").hasRole("ADMIN")
+//                                .requestMatchers("/api/tasks/**").authenticated()
+//                                .anyRequest().authenticated()
                 )
                 .httpBasic(Customizer.withDefaults())
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))

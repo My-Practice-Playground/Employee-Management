@@ -57,7 +57,7 @@ GET TASK BY ID
 /*
 GET ALL TASKS
 * */
-@PreAuthorize("hasRole('USER')")
+//@PreAuthorize("hasRole('USER')")
     @GetMapping
     public ResponseEntity<StandardResponse> getAllTasks() {
         log.info("Fetching all tasks");

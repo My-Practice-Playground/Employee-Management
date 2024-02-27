@@ -5,6 +5,7 @@ import lombok.Data;
 import lombok.ToString;
 
 import java.sql.Date;
+import java.util.List;
 
 @Entity
 @Data
@@ -21,5 +22,9 @@ public class Task {
     @ManyToOne(fetch = FetchType.LAZY,cascade = CascadeType.PERSIST)
     @ToString.Exclude
     private Employee employee;
+
+    @ToString.Exclude
+    @OneToMany(mappedBy = "task",fetch = FetchType.LAZY,cascade = CascadeType.ALL)
+    List <Supervisor_Task_Detail> supervisor_task_details;
 
 }
