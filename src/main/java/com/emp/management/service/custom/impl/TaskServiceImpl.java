@@ -7,14 +7,13 @@ import com.emp.management.service.custom.TaskService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
+
 @Slf4j
 @Service
 @RequiredArgsConstructor
@@ -68,8 +67,6 @@ public class TaskServiceImpl implements TaskService {
         log.info("Fetching all tasks");
 
         List<Task> taskList = taskRepository.findAll();
-        return taskList.stream().map(
-                task -> mapper.map(task, TaskDTO.class)
-        ).collect(Collectors.toList());
+        return taskList.stream().map(task -> mapper.map(task, TaskDTO.class)).collect(Collectors.toList());
     }
 }
