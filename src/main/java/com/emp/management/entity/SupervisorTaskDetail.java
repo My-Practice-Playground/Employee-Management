@@ -1,9 +1,6 @@
 package com.emp.management.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
-import jakarta.persistence.Id;
-import jakarta.persistence.ManyToOne;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -23,10 +20,10 @@ import java.sql.Date;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-
-public class Supervisor_Task_Detail {
+public class SupervisorTaskDetail {
     @Id
-    private Long id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer id;
 
     @ManyToOne(fetch = FetchType.EAGER)
     Supervisor supervisor;

@@ -32,5 +32,5 @@ public class Supervisor {
 
     @ToString.Exclude
     @OneToMany(mappedBy = "supervisor",fetch = FetchType.EAGER)
-    private List<Supervisor_Task_Detail> supervisorTaskDetails;
+    private List<SupervisorTaskDetail> supervisorTaskDetails;
 }

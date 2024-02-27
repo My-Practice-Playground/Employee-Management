@@ -4,7 +4,6 @@ import jakarta.persistence.*;
 import lombok.Data;
 import lombok.ToString;
 
-import java.sql.Date;
 import java.util.List;
 
 @Entity
@@ -25,6 +24,6 @@ public class Task {
 
     @ToString.Exclude
     @OneToMany(mappedBy = "task",fetch = FetchType.LAZY,cascade = CascadeType.ALL)
-    List <Supervisor_Task_Detail> supervisor_task_details;
+    List <SupervisorTaskDetail> supervisor_task_details;
 
 }

@@ -33,7 +33,6 @@ SAVE TASK
 /*
 DELETE TASK
 * */
-
     @DeleteMapping("/{id}")
     public ResponseEntity<StandardResponse> deleteTask(@PathVariable Long id) {
         log.info("Deleting task with id: {}", id);
