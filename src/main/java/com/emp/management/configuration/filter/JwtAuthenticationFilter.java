@@ -1,6 +1,7 @@
 package com.emp.management.configuration.filter;
 
 import com.emp.management.service.security.JwtService;
+import io.jsonwebtoken.JwtException;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -9,6 +10,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.lang.NonNull;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -17,7 +19,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
-
+import java.util.Collection;
 @Component
 @RequiredArgsConstructor
 @Slf4j
@@ -26,39 +28,44 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     private final JwtService jwtService;
     private final UserDetailsService userDetailsService;
 
-/*
-SECURITY FILTER FOR JWT
-* */
     @Override
-    protected void doFilterInternal(@NonNull HttpServletRequest request, @NonNull HttpServletResponse response, @NonNull FilterChain filterChain) throws ServletException, IOException {
-        log.info("Processing authentication for '{}'", request.getRequestURL());
-
-        final String header = request.getHeader("Authorization");
+    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
+        String header = request.getHeader("Authorization");
+        String username = null;
         String jwt = null;
-        String email = null;
-        if (header != null && header.startsWith("Bearer ")) {
-            jwt = header.substring(7);
-            email = jwtService.extractUsername(jwt);
-        }
 
-        if (email != null && SecurityContextHolder.getContext().getAuthentication() == null) {
-            log.info("Setting security context");
-
-            UserDetails userDetails = userDetailsService.loadUserByUsername(email);
-            if (jwtService.validateToken(jwt, userDetails)) {
-                log.info("Token is valid");
-
-                UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
-                authToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
-
-                log.info("Authenticated user '{}', setting security context", email);
-
-                SecurityContextHolder.getContext().setAuthentication(authToken);
-
-                log.info("Security context holder updated with the authenticated user '{}'", email);
+        try {
+            if (header != null && header.startsWith("Bearer ")) {
+                jwt = header.substring(7);
+                username = jwtService.extractUsername(jwt);
             }
+
+            if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
+                UserDetails userDetails = userDetailsService.loadUserByUsername(username);
+
+                if (jwtService.validateToken(jwt, userDetails)) {
+                    Collection<? extends GrantedAuthority> authorities = userDetails.getAuthorities();
+                    UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(userDetails, null, authorities);
+                    authToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+
+                    SecurityContextHolder.getContext().setAuthentication(authToken);
+                    log.info("User '{}' successfully authenticated", username);
+                } else {
+                    log.warn("Invalid JWT token for user '{}'", username);
+
+                }
+            }
+        } catch (JwtException e) {
+            log.error("JWT validation error: {}", e.getMessage());
+//            sendUnauthorizedError(response);
+
+        } catch (Exception e) {
+            log.error("Unexpected error during authentication: {}", e.getMessage());
+//            sendInternalServerError(response);
         }
+
         filterChain.doFilter(request, response);
         log.info("Request processed");
     }
+
 }

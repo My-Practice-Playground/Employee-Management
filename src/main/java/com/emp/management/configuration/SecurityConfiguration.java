@@ -24,28 +24,30 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 public class SecurityConfiguration {
     private final AuthenticationProvider authenticationProvider;
     private  final JwtAuthenticationFilter jwtAuthenticationFilter;
+    private final AuthEntryPoint unauthorizedHandler;
 
 /*
 SECURITY FILTER CHAIN
 **/
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+        log.info("SecurityFilterChain {} ");
+
         http.csrf(AbstractHttpConfigurer::disable);
         http.authorizeHttpRequests(
                 auth ->
                         auth.requestMatchers("/auth/**").permitAll()
                                 .requestMatchers(HttpMethod.DELETE,"/api/vehicles/**").hasRole("ADMIN")
                                 .requestMatchers(HttpMethod.DELETE,"/api/employees/**").hasRole("ADMIN")
-                                .requestMatchers(HttpMethod.DELETE,"/api/tasks/**").hasRole("ADMIN")
+                                .requestMatchers("/api/tasks/**").authenticated()
                                 .anyRequest().authenticated()
                 )
                 .httpBasic(Customizer.withDefaults())
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authenticationProvider(authenticationProvider)
+                .exceptionHandling(exception -> exception.authenticationEntryPoint(unauthorizedHandler))
                 .addFilterBefore(jwtAuthenticationFilter,UsernamePasswordAuthenticationFilter.class);
         return http.build();
+
     }
 }
-
-//grant acces to ADMIN role for DELETE request
-//.antMatchers(HttpMethod.DELETE,"/api/v1/demo/**").hasRole("ADMIN")

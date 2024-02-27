@@ -9,6 +9,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 @Slf4j
 @RestController
@@ -32,6 +33,7 @@ SAVE TASK
 /*
 DELETE TASK
 * */
+
     @DeleteMapping("/{id}")
     public ResponseEntity<StandardResponse> deleteTask(@PathVariable Long id) {
         log.info("Deleting task with id: {}", id);
@@ -55,6 +57,7 @@ GET TASK BY ID
 /*
 GET ALL TASKS
 * */
+@PreAuthorize("hasRole('USER')")
     @GetMapping
     public ResponseEntity<StandardResponse> getAllTasks() {
         log.info("Fetching all tasks");
