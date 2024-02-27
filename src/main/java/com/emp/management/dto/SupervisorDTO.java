@@ -23,4 +23,5 @@ public class SupervisorDTO {
     private String lastname;
     private String city;
     private Double salary;
+
 }
