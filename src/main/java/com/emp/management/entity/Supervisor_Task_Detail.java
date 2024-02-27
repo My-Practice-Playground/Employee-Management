@@ -25,16 +25,19 @@ import java.sql.Date;
 @NoArgsConstructor
 
 public class Supervisor_Task_Detail {
+    @Id
+    private Long id;
+
     @ManyToOne(fetch = FetchType.EAGER)
     Supervisor supervisor;
+
     @ManyToOne(fetch = FetchType.EAGER)
     Task task;
 
     String status;
+
     Boolean isCompleted;
+
     @CreationTimestamp
     Date assignedDate;
-    @Id
-    private Long id;
-
 }
