@@ -60,6 +60,21 @@ UPDATE SUPERVISOR TASK DETAIL
     @Override
     public void update(SupervisorTaskDetailDTO data) {
 
+        log.info("Update: {}", data);
+
+        SupervisorTaskDetail supervisorTaskDetail = supervisorTaskDetailRepository.findById(data.getId())
+                .orElseThrow(() -> {
+                    log.error("Supervisor Task Detail not found");
+
+                    return new RuntimeException("Supervisor Task Detail not found");
+                });
+
+//      In this scenario I am not going to update supervisor and task. Task status and isCompleted status are the only things that I am going to update
+        supervisorTaskDetail.setStatus(data.getStatus());
+        supervisorTaskDetail.setIsCompleted(data.getIsCompleted());
+
+        supervisorTaskDetailRepository.save(supervisorTaskDetail);
+
     }
 
 /*

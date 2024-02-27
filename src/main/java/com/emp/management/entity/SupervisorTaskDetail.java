@@ -26,15 +26,15 @@ public class SupervisorTaskDetail {
     private Integer id;
 
     @ManyToOne(fetch = FetchType.EAGER)
-    Supervisor supervisor;
+    private Supervisor supervisor;
 
     @ManyToOne(fetch = FetchType.EAGER)
-    Task task;
+    private Task task;
 
-    String status;
+    private String status;
 
-    Boolean isCompleted;
+    private Boolean isCompleted;
 
     @CreationTimestamp
-    Date assignedDate;
+    private Date assignedDate;
 }

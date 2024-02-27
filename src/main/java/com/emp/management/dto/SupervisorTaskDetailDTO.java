@@ -23,5 +23,5 @@ public class SupervisorTaskDetailDTO {
     private String status;
     private Boolean isCompleted;
     private Date assignedDate;
-    private Long id;
+    private Integer id;
 }
