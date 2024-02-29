@@ -54,10 +54,8 @@ AUTHENTICATE USER
                 request.getEmail(),
                 request.getPassword()
         ));
-
         var user = userRepository.findByEmail(request.getEmail()).orElseThrow(()-> {
             log.error("User not found");
-
             return new UsernameNotFoundException("User not found");
         });
         var jwtToken = jwtService.generateToken(user);

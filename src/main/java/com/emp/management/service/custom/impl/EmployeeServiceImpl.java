@@ -1,8 +1,11 @@
 package com.emp.management.service.custom.impl;
 
 import com.emp.management.dto.EmployeeDTO;
+import com.emp.management.dto.VehicleDTO;
 import com.emp.management.entity.Employee;
+import com.emp.management.entity.Vehicle;
 import com.emp.management.repository.EmployeeRepository;
+import com.emp.management.repository.VehicleRepository;
 import com.emp.management.service.custom.EmployeeService;
 import com.emp.management.util.exception.EmployeeNotFoundException;
 import lombok.RequiredArgsConstructor;
@@ -20,20 +23,33 @@ import java.util.Optional;
 public class EmployeeServiceImpl implements EmployeeService {
     private final ModelMapper mapper;
     private final EmployeeRepository employeeRepository;
+    private final VehicleRepository vehicleRepository;
 
-    /*
-        Performs Employee Save Operation
-     */
+    /**
+     * Performs Employee Save Operation
+     **/
     @Transactional
     @Override
     public void save(EmployeeDTO data) throws RuntimeException {
         log.info("Employee: " + data);
 
-        if (!employeeRepository.existsByEmail(data.getEmail())) {
-            employeeRepository.save(mapper.map(data, Employee.class));
-            return;
+        if (employeeRepository.existsByEmail(data.getEmail())) throw new RuntimeException("Employee already exists!");
+
+        Employee employee = mapper.map(data, Employee.class);
+
+        if (data.getVehicle() != null) {
+            Vehicle vehicle = mapper.map(data.getVehicle(), Vehicle.class);
+            if (!vehicleRepository.existsById(vehicle.getId())) {
+                log.info("Vehicle: " + data.getVehicle());
+                vehicle = vehicleRepository.save(mapper.map(data.getVehicle(), Vehicle.class));
+                log.info("Vehicle saved: " + employee.getVehicle());
+            }
+            log.info("vehicle setted");
+            employee.setVehicle(vehicleRepository.findById(vehicle.getId()).get());
         }
-        throw new RuntimeException("Employee already exists!");
+
+        employeeRepository.save(employee);
+        log.info("Employee saved: " + employee);
     }
 
 
@@ -41,12 +57,15 @@ public class EmployeeServiceImpl implements EmployeeService {
     @Override
     public void update(EmployeeDTO data) throws EmployeeNotFoundException {
         log.info("Updating employee: " + data);
+        if (!employeeRepository.existsById(data.getId())) throw new RuntimeException("Employee not exists!");
 
-        if (employeeRepository.existsById(data.getId())) {
-            employeeRepository.save(mapper.map(data, Employee.class));
-            return;
-        }
-        throw new EmployeeNotFoundException("Employee not found");
+        Employee employee = mapper.map(data, Employee.class);
+        vehicleRepository.findVehicleByEmployeeId(employee.getId()).ifPresent(vehicle -> {
+            employee.setVehicle(vehicle);
+        });
+
+        employeeRepository.save(employee);
+        log.info("Employee updated: " + employee);
     }
 
     @Transactional
@@ -68,7 +87,13 @@ public class EmployeeServiceImpl implements EmployeeService {
 
         Optional<Employee> employeeById = employeeRepository.findEmployeeById(id);
         if (employeeById.isPresent()) {
-            return mapper.map(employeeById.get(), EmployeeDTO.class);
+         return EmployeeDTO.builder()
+                    .id(employeeById.get().getId())
+                    .firstname(employeeById.get().getFirstname())
+                    .lastname(employeeById.get().getLastname())
+                    .email(employeeById.get().getEmail())
+                    .dob(employeeById.get().getDob())
+                    .build();
         }
         throw new EmployeeNotFoundException("Employee not found");
     }

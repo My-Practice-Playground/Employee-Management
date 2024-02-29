@@ -6,7 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
-import java.util.Date;
+import java.sql.Date;
 
 @Entity
 @Data
@@ -20,6 +20,7 @@ public class Vehicle {
     private String model;
     private Date manufactureDate;
     private String color;
+
     @OneToOne(mappedBy = "vehicle",fetch = FetchType.LAZY)
     @ToString.Exclude
     private Employee employee;

@@ -73,7 +73,7 @@ EXTRACTING ALL CLAIMS FROM THE TOKEN
                 .signWith(getSignKey())
                 .setSubject(userDetails.getUsername())
                 .setIssuedAt(new Date(System.currentTimeMillis()))
-                .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 10)) // 3 minute
+                .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60 * 24)) // 24 hours
                 .signWith(getSignKey(), SignatureAlgorithm.HS256).compact();
     }
 

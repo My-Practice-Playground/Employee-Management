@@ -30,8 +30,8 @@ SAVE VEHICLE
                 new StandardResponse(200, "Vehicle Saved", null), HttpStatus.CREATED);
     }
 
-/*
-GET ALL VEHICLES0
+/**
+GET ALL VEHICLES
 **/
     @GetMapping
     public ResponseEntity<StandardResponse> getAllVehicles() {

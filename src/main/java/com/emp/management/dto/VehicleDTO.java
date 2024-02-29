@@ -26,4 +26,12 @@ public class VehicleDTO {
     private String color;
 
     private EmployeeDTO employee;
+
+    public VehicleDTO(Long id, String make, Date manufactureDate, String model, String color) {
+        this.id = id;
+        this.make = make;
+        this.model = model;
+        this.manufactureDate = manufactureDate;
+        this.color = color;
+    }
 }

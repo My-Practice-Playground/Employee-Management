@@ -31,7 +31,7 @@ SAVE EMPLOYEE
                 new StandardResponse(200, "Employee Saved", null), HttpStatus.CREATED);
     }
 
-/*
+    /*
 GET ALL EMPLOYEES
 **/
     @GetMapping
