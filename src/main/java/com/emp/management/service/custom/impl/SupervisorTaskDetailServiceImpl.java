@@ -43,10 +43,12 @@ SAVE SUPERVISOR TASK DETAIL
 
         Supervisor supervisorNotFound = supervisorRepository.findById(data.getSupervisor().getId())
                 .orElseThrow(() -> new RuntimeException("Supervisor not found"));
+        
         Task taskNotFound = taskRepository.findById(data.getTask().getId())
                 .orElseThrow(() -> new RuntimeException("Task not found"));
 
         SupervisorTaskDetail map = modelMapper.map(data, SupervisorTaskDetail.class);
+
         map.setSupervisor(supervisorNotFound);
         map.setTask(taskNotFound);
 

@@ -19,6 +19,7 @@ public class Employee {
     private String lastname;
     private String email;
     private Date dob;
+    private String city;
 
     @OneToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE, CascadeType.DETACH})
     @ToString.Exclude

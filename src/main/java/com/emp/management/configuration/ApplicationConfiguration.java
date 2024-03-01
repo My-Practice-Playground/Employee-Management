@@ -19,7 +19,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 public class ApplicationConfiguration {
     private final UserRepository userRepository;
 
-/*
+/**
 USER DETAILS SERVICE BEAN
 * */
     @Bean
@@ -36,7 +36,7 @@ USER DETAILS SERVICE BEAN
         };
     }
 
-/*
+/**
 AUTHENTICATION PROVIDER BEAN
 * */
     @Bean

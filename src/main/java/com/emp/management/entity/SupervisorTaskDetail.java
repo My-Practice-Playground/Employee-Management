@@ -23,7 +23,7 @@ import java.sql.Date;
 public class SupervisorTaskDetail {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+    private Integer supervisorTaskDetailId;
 
     @ManyToOne(fetch = FetchType.EAGER)
     private Supervisor supervisor;

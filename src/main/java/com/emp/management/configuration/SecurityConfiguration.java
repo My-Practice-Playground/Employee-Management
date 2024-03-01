@@ -37,10 +37,10 @@ SECURITY FILTER CHAIN
         http.authorizeHttpRequests(
                 auth ->
                         auth.requestMatchers("/auth/**").permitAll()
-                                .requestMatchers(HttpMethod.DELETE,"/api/vehicles/**").hasRole("ADMIN")
-                                .requestMatchers(HttpMethod.DELETE,"/api/employees/**").hasRole("ADMIN")
-                                .requestMatchers(HttpMethod.DELETE,"/api/tasks/**").hasRole("ADMIN")
-                                .anyRequest().authenticated()
+//                                .requestMatchers(HttpMethod.DELETE,"/api/vehicles/**").hasRole("ADMIN")
+//                                .requestMatchers(HttpMethod.DELETE,"/api/employees/**").hasRole("ADMIN")
+//                                .requestMatchers(HttpMethod.DELETE,"/api/tasks/**").hasRole("ADMIN")
+                                .anyRequest().permitAll()
                 )
                 .httpBasic(Customizer.withDefaults())
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))

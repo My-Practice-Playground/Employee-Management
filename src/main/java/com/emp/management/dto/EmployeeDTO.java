@@ -24,14 +24,17 @@ public class EmployeeDTO {
     private String email;
     @NotNull(message = "Date of birth cannot be null")
     private Date dob;
+    private String city;
+
     private VehicleDTO vehicle;
 
-    public EmployeeDTO(Long id, String firstname, String lastname, String email, Date dob) {
+    public EmployeeDTO(Long id, String firstname, String lastname, String email, Date dob, String city) {
         this.id = id;
         this.firstname = firstname;
         this.lastname = lastname;
         this.email = email;
         this.dob = dob;
+        this.city=city;
     }
 
 }

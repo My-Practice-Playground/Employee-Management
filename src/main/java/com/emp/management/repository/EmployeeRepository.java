@@ -23,6 +23,6 @@ public interface EmployeeRepository extends JpaRepository<Employee, Long> {
 
 
     //USING JPQL QUERY TO GET ALL EMPLOYEE IN EmployeeDTO TYPE
-    @Query("SELECT new com.emp.management.dto.EmployeeDTO(e.id, e.firstname, e.lastname, e.email, e.dob) FROM Employee e")
+    @Query("SELECT new com.emp.management.dto.EmployeeDTO(e.id, e.firstname, e.lastname, e.email, e.dob, e.city) FROM Employee e")
     List<EmployeeDTO> getAllEmployeeInEmployeeDTOType();
 }

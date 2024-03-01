@@ -8,12 +8,13 @@ import com.emp.management.util.exception.VehicleNotFoundException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Slf4j
 @Service
@@ -52,6 +53,7 @@ public class VehicleServiceImpl implements VehicleService {
         log.info("Fetching vehicle with id: {}", id);
 
         Optional<Vehicle> byId = vehicleRepository.findById(id);
+
         if (byId.isPresent()) {
             VehicleDTO vehicleDTO = new VehicleDTO();
             vehicleDTO.setId(byId.get().getId());
@@ -68,5 +70,11 @@ public class VehicleServiceImpl implements VehicleService {
     public List<VehicleDTO> findAll() {
         log.info("Fetching all vehicles");
         return vehicleRepository.findAllVehicles();
+    }
+
+    @Override
+    public Page<Vehicle> getVehicles(String id, String color, String make, String model, Pageable pageable) {
+        log.info("Fetching vehicle with id, color, make, model: {}, {}, {}, {}", id, color, make, model);
+        return vehicleRepository.getVehicleByMakeAndColor(make,color,pageable);
     }
 }
