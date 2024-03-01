@@ -79,11 +79,11 @@ public class VehicleServiceImpl implements VehicleService {
      * @param make
      * @param model
      * @param pageable
-     * @return Page<Vehicle>
+     * @return Page<VehicleDTO>
      * @For fetching vehicles by make, color, model
      */
     @Override
-    public Page<Vehicle> getVehicles(String id, String color, String make, String model, Pageable pageable) {
+    public Page<VehicleDTO> getVehicles(String id, String color, String make, String model, Pageable pageable) {
         log.info("Fetching vehicle with id, color, make, model: {}, {}, {}, {}", id, color, make, model);
         return vehicleRepository.getVehicleByMakeAndColor(make,color,model,pageable);
     }

@@ -12,5 +12,5 @@ import java.util.Optional;
 
 public interface VehicleService extends SuperService<VehicleDTO,Long> {
 
-    Page<Vehicle> getVehicles(String id, String color, String make, String model, Pageable pageable);
+    Page<VehicleDTO> getVehicles(String id, String color, String make, String model, Pageable pageable);
 }

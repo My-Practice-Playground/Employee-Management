@@ -53,7 +53,7 @@ GET ALL VEHICLES
      * @param model
      * @param size
      * @param page
-     * @return
+     * @return Page of VehicleDTO
      */
     @GetMapping("/filter")
     public ResponseEntity<StandardResponse> getVehicleDetails(
