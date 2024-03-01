@@ -33,11 +33,11 @@ public interface VehicleRepository extends JpaRepository<Vehicle, Long> {
      * @return Page of Vehicles
      * @For Filtering Vehicles from make and color
      */
-    @Query(value = "SELECT new com.emp.management.dto.VehicleDTO(v.id,v.model,v.manufactureDate,v.make,v.color) " +
-            "FROM Vehicle v WHERE " +
-            "(:make IS NULL OR v.make LIKE  %:make%) AND " +
-            "(:color IS null  or v.color like %:color%) AND "+
-            "(:model IS null  or v.model like %:model%)")
-    Page<VehicleDTO> getVehicleByMakeAndColor(String make, String color,String model, Pageable pageable);
-
+    @Query("SELECT new com.emp.management.dto.VehicleDTO(v.id, v.make, v.manufactureDate, v.model, v.color) " +
+            "FROM Vehicle v " +
+            "WHERE " +
+            "(:make IS NULL OR LOWER(v.make) LIKE LOWER(concat('%', :make, '%'))) " +
+            "AND (:color IS NULL OR LOWER(v.color) LIKE LOWER(concat('%', :color, '%'))) " +
+            "AND (:model IS NULL OR LOWER(v.model) LIKE LOWER(concat('%', :model, '%')))")
+    Page<VehicleDTO> getVehicleByMakeAndColor(String color, String make, String model, Pageable pageable);
 }
