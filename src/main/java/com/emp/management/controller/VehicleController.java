@@ -45,9 +45,16 @@ GET ALL VEHICLES
                 new StandardResponse(200, "Vehicles Fetched", vehicleService.findAll()), HttpStatus.OK);
     }
 
-/*
-GET VEHICLE BY ID
-**/
+    /**
+     *
+     * @param id
+     * @param color
+     * @param make
+     * @param model
+     * @param size
+     * @param page
+     * @return
+     */
     @GetMapping("/filter")
     public ResponseEntity<StandardResponse> getVehicleDetails(
             @RequestParam(name = "id",required = false) String id,

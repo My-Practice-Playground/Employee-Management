@@ -32,7 +32,11 @@ public interface VehicleRepository extends JpaRepository<Vehicle, Long> {
      * @return Page of Vehicles
      * @For Filtering Vehicles from make and color
      */
-    @Query(value = "SELECT v.model,v.color,v.manufactureDate,v.make,v.id FROM Vehicle v WHERE " + "(:make IS NULL OR v.make = :make) AND " + "(:color IS null  or v.color like %:color%)")
-    Page<Vehicle> getVehicleByMakeAndColor(String make, String color, Pageable pageable);
+    @Query(value = "SELECT v.model,v.color,v.manufactureDate,v.make,v.id " +
+            "FROM Vehicle v WHERE " +
+            "(:make IS NULL OR v.make LIKE  %:make%) AND " +
+            "(:color IS null  or v.color like %:color%) AND "+
+            "(:model IS null  or v.model like %:model%)")
+    Page<Vehicle> getVehicleByMakeAndColor(String make, String color,String model, Pageable pageable);
 
 }
