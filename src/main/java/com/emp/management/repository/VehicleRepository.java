@@ -15,10 +15,6 @@ import java.util.Optional;
 public interface VehicleRepository extends JpaRepository<Vehicle, Long> {
 
     /**
-     * @param make
-     * @param color
-     * @param model
-     * @param pageable
      * @return Page of VehicleDTO
      * @For Filtering Vehicles
      */
