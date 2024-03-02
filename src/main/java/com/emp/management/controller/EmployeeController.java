@@ -21,9 +21,11 @@ import org.springframework.web.bind.annotation.*;
 public class EmployeeController {
     private final EmployeeService employeeService;
 
-/*
-SAVE EMPLOYEE
-**/
+    /**
+     * SAVE EMPLOYEE
+     * @param employee
+     * @return ResponseEntity<StandardResponse>
+     */
     @PostMapping
     public ResponseEntity<StandardResponse> saveEmployee(@RequestBody @Valid EmployeeDTO employee) {
         log.info("Employee: {}", employee);
@@ -33,9 +35,10 @@ SAVE EMPLOYEE
                 new StandardResponse(200, "Employee Saved", null), HttpStatus.CREATED);
     }
 
-    /*
-GET ALL EMPLOYEES
-**/
+    /**
+     * GET ALL EMPLOYEES
+     * @return ResponseEntity<StandardResponse>
+     */
     @GetMapping
     public ResponseEntity<StandardResponse> getAllEmployees() {
         log.info("Fetching all employees");
@@ -45,9 +48,11 @@ GET ALL EMPLOYEES
                         employeeService.getAllEmployeeInEmployeeDTOType()), HttpStatus.OK);
     }
 
-/*
-DELETE EMPLOYEE BY ID
-**/
+    /**
+     * DELETE EMPLOYEE BY ID
+     * @param id
+     * @return ResponseEntity<StandardResponse>
+     */
     @DeleteMapping("/{id}")
     public ResponseEntity<StandardResponse> deleteEmployee(@PathVariable Long id) {
         log.info("Deleting employee with id: {}", id);
@@ -58,9 +63,11 @@ DELETE EMPLOYEE BY ID
 
     }
 
-/*
-GET EMPLOYEE BY ID
-**/
+    /**
+     * GET EMPLOYEE BY ID
+      * @param id
+     * @return
+     */
     @GetMapping("/{id}")
     public ResponseEntity<StandardResponse> getEmployeeById(@PathVariable Long id) {
         log.info("Fetching employee with id: {}", id);
@@ -69,9 +76,12 @@ GET EMPLOYEE BY ID
                 new StandardResponse(200, "Employee Fetched", employeeService.findById(id)), HttpStatus.OK);
     }
 
-/*
-UPDATE EMPLOYEE BY ID
-**/
+    /**
+     * UPDATE EMPLOYEE
+     * @param id
+     * @param employee
+     * @return ResponseEntity<StandardResponse>
+     */
     @PutMapping("/{id}")
     public ResponseEntity<StandardResponse> updateEmployee(@PathVariable Long id, @RequestBody @Valid EmployeeDTO employee) {
         log.info("Updating employee with id: {}", id);
@@ -82,6 +92,16 @@ UPDATE EMPLOYEE BY ID
                 new StandardResponse(200, "Employee Updated", null), HttpStatus.OK);
     }
 
+    /**
+     * GET EMPLOYEE LIST WITH FILTER
+     * @param city
+     * @param email
+     * @param firstname
+     * @param lastname
+     * @param page
+     * @param size
+     * @return ResponseEntity<StandardResponse>
+     */
     @GetMapping("/filter")
     public ResponseEntity<StandardResponse> getEmployeeList(@RequestParam(required = false) String city,
                                                             @RequestParam(required = false) String email,
