@@ -2,17 +2,13 @@ package com.emp.management.dto;
 
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.sql.Date;
 
 @Data
-@AllArgsConstructor
-@NoArgsConstructor
 @Builder
+@RequiredArgsConstructor
 public class EmployeeDTO {
     private Long id;
     @NotNull(message = "First name cannot be null")
@@ -35,6 +31,15 @@ public class EmployeeDTO {
         this.email = email;
         this.dob = dob;
         this.city=city;
+    }
+    public EmployeeDTO(Long id, String firstname, String lastname, String email, Date dob, String city,VehicleDTO vehicleDTO) {
+        this.id = id;
+        this.firstname = firstname;
+        this.lastname = lastname;
+        this.email = email;
+        this.dob = dob;
+        this.city=city;
+        this.vehicle = vehicleDTO;
     }
 
 }

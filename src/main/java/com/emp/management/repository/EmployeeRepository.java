@@ -2,6 +2,8 @@ package com.emp.management.repository;
 
 import com.emp.management.dto.EmployeeDTO;
 import com.emp.management.entity.Employee;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
@@ -12,17 +14,51 @@ import java.util.Optional;
 @Repository
 public interface EmployeeRepository extends JpaRepository<Employee, Long> {
 
-    //CHECK IF EMPLOYEE EXISTS BY ID
+    /**
+     * CHECK IF EMPLOYEE EXISTS BY ID
+     * @param id
+     * @return boolean
+     */
     boolean existsById(Long id);
 
-    //FIND EMPLOYEE BY EMAIL
+    /**
+     * FIND EMPLOYEE BY EMAIL
+     * @param id
+     * @return Optional<Employee>
+     */
     Optional<Employee> findEmployeeById(Long id);
 
-    //CHECK IF EMAIL EXISTS
+    /**
+     * CHECK IF EMPLOYEE EXISTS BY EMAIL
+     * @param email
+     * @return boolean
+     */
     boolean existsByEmail(String email);
 
-
-    //USING JPQL QUERY TO GET ALL EMPLOYEE IN EmployeeDTO TYPE
+    /**
+     * USING JPQL QUERY TO GET ALL EMPLOYEE IN EMPLOYEE DTO TYPE
+     * @return List<EmployeeDTO>
+     */
     @Query("SELECT new com.emp.management.dto.EmployeeDTO(e.id, e.firstname, e.lastname, e.email, e.dob, e.city) FROM Employee e")
     List<EmployeeDTO> getAllEmployeeInEmployeeDTOType();
+
+    /**
+     * USING JPQL QUERY TO GET EMPLOYEE BY CITY, EMAIL, FIRSTNAME, LASTNAME
+     *
+     * @param city
+     * @param email
+     * @param firstname
+     * @param lastname
+     * @param pageable
+     * @return Page<EmployeeDTO>
+     */
+    @Query("SELECT new com.emp.management.dto.EmployeeDTO(e.id, e.firstname, e.lastname, e.email, e.dob, e.city)" +
+            " FROM Employee e " +
+            "WHERE " +
+            "(:city IS NULL OR LOWER(e.city) LIKE LOWER(concat('%', :city, '%'))) " +
+            "AND (:email IS NULL OR LOWER(e.email) LIKE LOWER(concat('%', :email, '%'))) " +
+            "AND (:firstname IS NULL OR LOWER(e.firstname) LIKE LOWER(concat('%', :firstname, '%'))) " +
+            "AND (:lastname IS NULL OR LOWER(e.lastname) LIKE LOWER(concat('%', :lastname, '%')))")
+    Page<EmployeeDTO> getEmployeeList(String city, String email, String firstname, String lastname, Pageable pageable);
+
 }

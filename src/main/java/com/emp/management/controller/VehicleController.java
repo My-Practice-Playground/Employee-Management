@@ -63,12 +63,11 @@ GET ALL VEHICLES
             @RequestParam(name = "model",required = false) String model,
             @RequestParam(name = "size",required = false,defaultValue = "10") Integer size,
             @RequestParam(name = "page", defaultValue = "0") Integer page
-
     ) {
         log.info("Fetching vehicle with id, color, make, model, date: {}", id, color, make, model);
-        Pageable pageable = Pageable.ofSize(size).withPage(page);
+
         return new ResponseEntity<>(
-                new StandardResponse(200, "Vehicle Fetched", vehicleService.getVehicles(id,color,make,model,pageable)), HttpStatus.OK);
+                new StandardResponse(200, "Vehicle Fetched", vehicleService.getVehicles(id,color,make,model,Pageable.ofSize(size).withPage(page))), HttpStatus.OK);
     }
 
 /*

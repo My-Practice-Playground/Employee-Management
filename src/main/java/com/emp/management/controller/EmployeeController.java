@@ -8,6 +8,8 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -78,6 +80,20 @@ UPDATE EMPLOYEE BY ID
         employeeService.update(employee);
         return new ResponseEntity<>(
                 new StandardResponse(200, "Employee Updated", null), HttpStatus.OK);
+    }
+
+    @GetMapping("/filter")
+    public ResponseEntity<StandardResponse> getEmployeeList(@RequestParam(required = false) String city,
+                                                            @RequestParam(required = false) String email,
+                                                            @RequestParam(required = false) String firstname,
+                                                            @RequestParam(required = false) String lastname,
+                                                            @RequestParam(defaultValue = "0") Integer page,
+                                                            @RequestParam(defaultValue = "10") Integer size) {
+        log.info("Fetching employee list with city: {}, email: {}, firstname: {}, lastname: {}", city, email, firstname, lastname);
+        Pageable pageable = Pageable.ofSize(size).withPage(page);
+        return new ResponseEntity<>(
+                new StandardResponse(200, "Employee List Fetched",
+                        employeeService.getEmployeeList(city, email, firstname, lastname,pageable)), HttpStatus.OK);
     }
 
 

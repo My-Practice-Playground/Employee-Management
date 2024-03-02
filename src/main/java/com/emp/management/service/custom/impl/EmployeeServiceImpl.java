@@ -11,6 +11,8 @@ import com.emp.management.util.exception.EmployeeNotFoundException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -87,7 +89,7 @@ public class EmployeeServiceImpl implements EmployeeService {
 
         Optional<Employee> employeeById = employeeRepository.findEmployeeById(id);
         if (employeeById.isPresent()) {
-         return EmployeeDTO.builder()
+            return EmployeeDTO.builder()
                     .id(employeeById.get().getId())
                     .firstname(employeeById.get().getFirstname())
                     .lastname(employeeById.get().getLastname())
@@ -111,5 +113,16 @@ public class EmployeeServiceImpl implements EmployeeService {
         log.info("Fetching all employees in EmployeeDTO type");
 
         return employeeRepository.getAllEmployeeInEmployeeDTOType();
+    }
+
+    @Override
+    public Page<EmployeeDTO> getEmployeeList(String city, String email, String firstname, String lastname, Pageable pageable) {
+        log.info("Fetching employee list with city: {}, email: {}, firstname: {}, lastname: {}", city, email, firstname, lastname);
+        try {
+            return employeeRepository.getEmployeeList(city, email, firstname, lastname, pageable);
+        } catch (Exception e) {
+            log.error("Error: ", e);
+            throw e;
+        }
     }
 }
