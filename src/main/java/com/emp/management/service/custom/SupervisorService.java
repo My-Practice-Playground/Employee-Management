@@ -2,6 +2,7 @@ package com.emp.management.service.custom;
 
 import com.emp.management.dto.SupervisorDTO;
 import com.emp.management.service.SuperService;
+import org.springframework.data.domain.Page;
 
 /**
  * @author Lakshan Chamoditha Perera
@@ -11,5 +12,7 @@ import com.emp.management.service.SuperService;
  **/
 
 
-public interface SupervisorService extends SuperService<SupervisorDTO,Long> {
+public interface SupervisorService extends SuperService<SupervisorDTO, Long> {
+
+    Page<SupervisorDTO> getSupervisors(String city, String email, String firstname, String lastname, Double salary, Integer page, Integer size);
 }

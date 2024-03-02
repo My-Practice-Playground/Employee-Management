@@ -23,9 +23,9 @@ import org.springframework.web.bind.annotation.*;
 public class SupervisorController {
     private final SupervisorService supervisorService;
 
-/*
-SAVE SUPERVISOR
-* */
+    /*
+    SAVE SUPERVISOR
+    * */
     @PostMapping
     public ResponseEntity<StandardResponse> saveSupervisor(@RequestBody SupervisorDTO supervisorDTO) {
         supervisorService.save(supervisorDTO);
@@ -33,27 +33,27 @@ SAVE SUPERVISOR
                 new StandardResponse(HttpStatus.CREATED.value(), "Supervisor Saved", ""), HttpStatus.OK);
     }
 
-/*
-GET ALL SUPERVISORS
-* */
+    /*
+    GET ALL SUPERVISORS
+    * */
     @GetMapping
     public ResponseEntity<StandardResponse> getAllSupervisors() {
         return new ResponseEntity<>(
                 new StandardResponse(HttpStatus.OK.value(), "Supervisor List Fetched", supervisorService.findAll()), HttpStatus.OK);
     }
 
-/*
-GET SUPERVISOR BY ID
-* */
+    /*
+    GET SUPERVISOR BY ID
+    * */
     @GetMapping("/{id}")
     public ResponseEntity<StandardResponse> getSupervisorById(@PathVariable Long id) {
         return new ResponseEntity<>(
                 new StandardResponse(HttpStatus.OK.value(), "Supervisor Fetched", supervisorService.findById(id)), HttpStatus.OK);
     }
 
-/*
-UPDATE SUPERVISOR
-* */
+    /*
+    UPDATE SUPERVISOR
+    * */
     @PutMapping("/{id}")
     public ResponseEntity<StandardResponse> updateSupervisor(@RequestBody SupervisorDTO supervisorDTO) {
         supervisorService.update(supervisorDTO);
@@ -61,9 +61,9 @@ UPDATE SUPERVISOR
                 new StandardResponse(HttpStatus.OK.value(), "Supervisor Updated", ""), HttpStatus.OK);
     }
 
-/*
-DELETE SUPERVISOR
-* */
+    /*
+    DELETE SUPERVISOR
+    * */
     @DeleteMapping("/{id}")
     public ResponseEntity<StandardResponse> deleteSupervisor(@RequestParam Long id) {
         supervisorService.delete(id);
@@ -71,7 +71,19 @@ DELETE SUPERVISOR
                 new StandardResponse(HttpStatus.OK.value(), "Supervisor Deleted", ""), HttpStatus.OK);
     }
 
-
+    @GetMapping("/filter")
+    public ResponseEntity<StandardResponse> getSupervisorByFilter(
+            @RequestParam(name = "city", required = false) String city,
+            @RequestParam(name = "email", required = false) String email,
+            @RequestParam(name = "firstname", required = false) String firstname,
+            @RequestParam(name = "lastname", required = false) String lastname,
+            @RequestParam(name = "salary", required = false) Double salary,
+            @RequestParam(name = "page", defaultValue = "0") Integer page,
+            @RequestParam(name = "size", defaultValue = "10") Integer size
+    ) {
+        return new ResponseEntity<>(
+                new StandardResponse(HttpStatus.OK.value(), "Supervisor Fetched", supervisorService.getSupervisors(city, email, firstname, lastname, salary, page, size)), HttpStatus.OK);
+    }
 
 
 }

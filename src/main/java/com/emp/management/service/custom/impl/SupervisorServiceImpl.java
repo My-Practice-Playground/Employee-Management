@@ -7,6 +7,8 @@ import com.emp.management.service.custom.SupervisorService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -88,5 +90,12 @@ public class SupervisorServiceImpl implements SupervisorService {
 
         List<Supervisor> supervisorList = supervisorRepository.findAll();
         return supervisorList.stream().map(supervisor -> mapper.map(supervisor, SupervisorDTO.class)).toList();
+    }
+
+    @Override
+    public Page<SupervisorDTO> getSupervisors(String city, String email, String firstname, String lastname, Double salary, Integer page, Integer size) {
+        log.info("Fetching supervisor with city, email, firstname, lastname, salary: {}", city, email, firstname, lastname, salary);
+
+        return supervisorRepository.getSupervisors(city, email, firstname, lastname, salary, Pageable.ofSize(size).withPage(page));
     }
 }
