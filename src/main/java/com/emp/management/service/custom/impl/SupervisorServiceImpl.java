@@ -30,37 +30,50 @@ public class SupervisorServiceImpl implements SupervisorService {
     private final SupervisorRepository supervisorRepository;
     private final ModelMapper mapper;
 
+    /**
+     * Performs Supervisor Save Operation
+     *
+     * @param data
+     */
     @Transactional
     @Override
     public void save(SupervisorDTO data) {
         log.info("Supervisor: {}", data);
 
-        if (supervisorRepository.existsByEmail(data.getEmail()))
-            throw new RuntimeException("Supervisor already exists");
-
-        supervisorRepository.save(mapper.map(data, Supervisor.class));
+        try {
+            if (supervisorRepository.existsByEmail(data.getEmail()))
+                throw new RuntimeException("Supervisor already exists");
+            supervisorRepository.save(mapper.map(data, Supervisor.class));
+        } catch (Exception e) {
+            log.error("Error: ", e);
+            throw e;
+        }
     }
 
     @Transactional
     @Override
     public void update(SupervisorDTO data) {
         log.info("Supervisor: {}", data);
+        try {
+            if (!supervisorRepository.existsById(data.getId())) {
+                log.error("Supervisor not found");
+                throw new RuntimeException("Supervisor not found");
+            }
 
-        if (!supervisorRepository.existsById(data.getId())) {
-            log.error("Supervisor not found");
-            throw new RuntimeException("Supervisor not found");
+            Optional<Supervisor> byId = supervisorRepository.findById(data.getId());
+            byId.get().setFirstname(data.getFirstname());
+            byId.get().setLastname(data.getLastname());
+            byId.get().setEmail(data.getEmail());
+            byId.get().setSalary(data.getSalary());
+            byId.get().setCity(data.getCity());
+
+            supervisorRepository.save(byId.get());
+
+            log.info("Supervisor updated");
+        } catch (Exception e) {
+            log.error("Error: ", e);
+            throw e;
         }
-
-        Optional<Supervisor> byId = supervisorRepository.findById(data.getId());
-        byId.get().setFirstname(data.getFirstname());
-        byId.get().setLastname(data.getLastname());
-        byId.get().setEmail(data.getEmail());
-        byId.get().setSalary(data.getSalary());
-        byId.get().setCity(data.getCity());
-
-        supervisorRepository.save(byId.get());
-
-        log.info("Supervisor updated");
     }
 
 
@@ -68,34 +81,52 @@ public class SupervisorServiceImpl implements SupervisorService {
     @Override
     public void delete(Long id) {
         log.info("Supervisor id: {}", id);
-        if (supervisorRepository.existsById(id)) {
-            log.info("Supervisor found");
-            supervisorRepository.deleteById(id);
-            log.info("Supervisor deleted");
-        } else throw new RuntimeException("Supervisor not found");
+        try {
+            if (supervisorRepository.existsById(id)) {
+                log.info("Supervisor found");
+                supervisorRepository.deleteById(id);
+                log.info("Supervisor deleted");
+            } else throw new RuntimeException("Supervisor not found");
 
+        } catch (Exception e) {
+            log.error("Error: ", e);
+            throw e;
+        }
     }
 
     @Override
     public SupervisorDTO findById(Long id) {
         log.info("find by if {}" + id);
 
-        Supervisor supervisor = supervisorRepository.findById(id).orElseThrow(() -> new RuntimeException("Supervisor not found"));
-        return mapper.map(supervisor, SupervisorDTO.class);
+        try {
+            Supervisor supervisor = supervisorRepository.findById(id).orElseThrow(() -> new RuntimeException("Supervisor not found"));
+            return mapper.map(supervisor, SupervisorDTO.class);
+        } catch (Exception e) {
+            log.error("Error: ", e);
+            throw e;
+        }
     }
 
     @Override
     public List<SupervisorDTO> findAll() {
-        log.info("find all {}");
-
-        List<Supervisor> supervisorList = supervisorRepository.findAll();
-        return supervisorList.stream().map(supervisor -> mapper.map(supervisor, SupervisorDTO.class)).toList();
+        log.info("Fetching all supervisors");
+        try {
+            List<Supervisor> supervisorList = supervisorRepository.findAll();
+            return supervisorList.stream().map(supervisor -> mapper.map(supervisor, SupervisorDTO.class)).toList();
+        } catch (Exception e) {
+            log.error("Error: ", e);
+            throw e;
+        }
     }
 
     @Override
     public Page<SupervisorDTO> getSupervisors(String city, String email, String firstname, String lastname, Double salary, Integer page, Integer size) {
-        log.info("Fetching supervisor with city, email, firstname, lastname, salary: {}", city, email, firstname, lastname, salary);
-
-        return supervisorRepository.getSupervisors(city, email, firstname, lastname, salary, Pageable.ofSize(size).withPage(page));
+        log.info("Fetching all supervisors");
+        try {
+            return supervisorRepository.getSupervisors(city, email, firstname, lastname, salary, Pageable.ofSize(size).withPage(page));
+        } catch (Exception e) {
+            log.error("Error: ", e);
+            throw e;
+        }
     }
 }
