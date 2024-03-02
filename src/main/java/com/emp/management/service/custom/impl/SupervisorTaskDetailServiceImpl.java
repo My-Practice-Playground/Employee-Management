@@ -15,7 +15,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.Optional;
 
 /**
  * @author Lakshan Chamoditha Perera
@@ -33,96 +32,112 @@ public class SupervisorTaskDetailServiceImpl implements SupervisorTaskDetailServ
     private final TaskRepository taskRepository;
     private final ModelMapper modelMapper;
 
-/*
-SAVE SUPERVISOR TASK DETAIL
-* */
+    /*
+    SAVE SUPERVISOR TASK DETAIL
+    * */
     @Transactional
     @Override
     public void save(SupervisorTaskDetailDTO data) {
-        log.info("Save: {}", data);
+        log.info("Supervisor Task Detail: {}", data);
+        try {
+            Supervisor supervisorNotFound = supervisorRepository.findById(data.getSupervisor().getId()).orElseThrow(() -> new RuntimeException("Supervisor not found"));
 
-        Supervisor supervisorNotFound = supervisorRepository.findById(data.getSupervisor().getId())
-                .orElseThrow(() -> new RuntimeException("Supervisor not found"));
-        
-        Task taskNotFound = taskRepository.findById(data.getTask().getId())
-                .orElseThrow(() -> new RuntimeException("Task not found"));
+            Task taskNotFound = taskRepository.findById(data.getTask().getId()).orElseThrow(() -> new RuntimeException("Task not found"));
 
-        SupervisorTaskDetail map = modelMapper.map(data, SupervisorTaskDetail.class);
-
-        map.setSupervisor(supervisorNotFound);
-        map.setTask(taskNotFound);
-
-        supervisorTaskDetailRepository.save(map);
+            SupervisorTaskDetail map = modelMapper.map(data, SupervisorTaskDetail.class);
+            map.setSupervisor(supervisorNotFound);
+            map.setTask(taskNotFound);
+            supervisorTaskDetailRepository.save(map);
+        } catch (Exception e) {
+            log.error("Error: ", e);
+            throw e;
+        }
     }
 
-/*
-UPDATE SUPERVISOR TASK DETAIL
-* */
+    /**
+     * UPDATE SUPERVISOR TASK DETAIL
+     *
+     * @param data
+     */
     @Transactional
     @Override
     public void update(SupervisorTaskDetailDTO data) {
-
-        log.info("Update: {}", data);
-
-        SupervisorTaskDetail supervisorTaskDetail = supervisorTaskDetailRepository.findById(data.getId())
-                .orElseThrow(() -> {
-                    log.error("Supervisor Task Detail not found");
-
-                    return new RuntimeException("Supervisor Task Detail not found");
-                });
+        log.info("Supervisor Task Detail: {}", data);
+        try {
+            SupervisorTaskDetail supervisorTaskDetail = supervisorTaskDetailRepository.findById(data.getId()).orElseThrow(() -> {
+                log.error("Supervisor Task Detail not found");
+                return new RuntimeException("Supervisor Task Detail not found");
+            });
 
 //      In this scenario I am not going to update supervisor and task. Task status and isCompleted status are the only things that I am going to update
-        supervisorTaskDetail.setStatus(data.getStatus());
-        supervisorTaskDetail.setIsCompleted(data.getIsCompleted());
-
-        supervisorTaskDetailRepository.save(supervisorTaskDetail);
-
+            supervisorTaskDetail.setStatus(data.getStatus());
+            supervisorTaskDetail.setIsCompleted(data.getIsCompleted());
+            supervisorTaskDetailRepository.save(supervisorTaskDetail);
+        } catch (Exception e) {
+            log.error("Error: ", e);
+            throw e;
+        }
     }
 
-/*
-DELETE SUPERVISOR TASK DETAIL
-* */
+    /**
+     * DELETE SUPERVISOR TASK DETAIL
+     *
+     * @param id
+     */
     @Transactional
     @Override
     public void delete(Integer id) {
         log.info("Deleting task with id: {}", id);
+        try {
 
-        supervisorTaskDetailRepository.findById(id)
-                .orElseThrow(()->{
-                    log.error("Supervisor Task Detail not found");
+            supervisorTaskDetailRepository.findById(id).orElseThrow(() -> {
+                log.error("Supervisor Task Detail not found");
 
-                    return new RuntimeException("Supervisor Task Detail not found");
-                });
+                return new RuntimeException("Supervisor Task Detail not found");
+            });
 
-        supervisorTaskDetailRepository.deleteById(id);
-        log.info("Supervisor Task Detail deleted");
+            supervisorTaskDetailRepository.deleteById(id);
+            log.info("Supervisor Task Detail deleted");
+        } catch (Exception e) {
+            log.error("Error: ", e);
+            throw e;
+        }
     }
 
-/*
-GET SUPERVISOR TASK DETAIL BY ID
-* */
+    /**
+     * FIND SUPERVISOR TASK DETAIL BY ID
+     *
+     * @param id
+     * @return
+     */
     @Override
     public SupervisorTaskDetailDTO findById(Integer id) {
-        log.info("Fetching task with id: {}", id);
+        log.info("find by if {}", id);
+        try{
+            return modelMapper.map(supervisorTaskDetailRepository.findById(id).orElseThrow(() -> {
+                log.error("Supervisor Task Detail not found");
 
-        return modelMapper.map(
-                supervisorTaskDetailRepository.findById(id)
-                        .orElseThrow(() -> {
-                            log.error("Supervisor Task Detail not found");
-
-                            return new RuntimeException("Supervisor Task Detail not found");
-                        })
-                , SupervisorTaskDetailDTO.class);
+                return new RuntimeException("Supervisor Task Detail not found");
+            }), SupervisorTaskDetailDTO.class);
+        }catch (Exception e){
+            log.error("Error: ", e);
+            throw e;
+        }
     }
 
-/*
-GET ALL SUPERVISOR TASK DETAIL
-* */
+    /**
+     * FIND ALL SUPERVISOR TASK DETAIL
+     *
+     * @return List<SupervisorTaskDetailDTO>
+     */
     @Override
     public List<SupervisorTaskDetailDTO> findAll() {
         log.info("Fetching all tasks");
-
-        List<SupervisorTaskDetail> all = supervisorTaskDetailRepository.findAll();
-        return all.stream().map(supervisorTaskDetail -> modelMapper.map(supervisorTaskDetail, SupervisorTaskDetailDTO.class)).toList();
-    }
+        try {
+            return supervisorTaskDetailRepository.findAll().stream().map(supervisorTaskDetail -> modelMapper.map(supervisorTaskDetail, SupervisorTaskDetailDTO.class)).toList();
+        } catch (Exception e) {
+            log.error("Error: ", e);
+            throw e;
+        }
+ }
 }

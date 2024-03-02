@@ -39,7 +39,6 @@ public class SupervisorServiceImpl implements SupervisorService {
     @Override
     public void save(SupervisorDTO data) {
         log.info("Supervisor: {}", data);
-
         try {
             if (supervisorRepository.existsByEmail(data.getEmail()))
                 throw new RuntimeException("Supervisor already exists");
@@ -50,6 +49,11 @@ public class SupervisorServiceImpl implements SupervisorService {
         }
     }
 
+    /**
+     * Performs Supervisor Update Operation
+     *
+     * @param data
+     */
     @Transactional
     @Override
     public void update(SupervisorDTO data) {
@@ -77,6 +81,11 @@ public class SupervisorServiceImpl implements SupervisorService {
     }
 
 
+    /**
+     * Performs Supervisor Delete Operation
+     *
+     * @param id
+     */
     @Transactional
     @Override
     public void delete(Long id) {
@@ -94,10 +103,15 @@ public class SupervisorServiceImpl implements SupervisorService {
         }
     }
 
+    /**
+     * FIND SUPERVISOR BY ID
+     * @param id
+     * @return
+     */
+
     @Override
     public SupervisorDTO findById(Long id) {
         log.info("find by if {}" + id);
-
         try {
             Supervisor supervisor = supervisorRepository.findById(id).orElseThrow(() -> new RuntimeException("Supervisor not found"));
             return mapper.map(supervisor, SupervisorDTO.class);
@@ -107,6 +121,10 @@ public class SupervisorServiceImpl implements SupervisorService {
         }
     }
 
+    /**
+     * FIND ALL SUPERVISORS
+     * @return
+     */
     @Override
     public List<SupervisorDTO> findAll() {
         log.info("Fetching all supervisors");
@@ -119,6 +137,17 @@ public class SupervisorServiceImpl implements SupervisorService {
         }
     }
 
+    /**
+     * FIND ALL SUPERVISORS WITH PAGINATION
+     * @param city
+     * @param email
+     * @param firstname
+     * @param lastname
+     * @param salary
+     * @param page
+     * @param size
+     * @return Page<SupervisorDTO>
+     */
     @Override
     public Page<SupervisorDTO> getSupervisors(String city, String email, String firstname, String lastname, Double salary, Integer page, Integer size) {
         log.info("Fetching all supervisors");
