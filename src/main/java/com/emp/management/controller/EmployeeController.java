@@ -116,5 +116,22 @@ public class EmployeeController {
                         employeeService.getEmployeeList(city, email, firstname, lastname,pageable)), HttpStatus.OK);
     }
 
+    /**
+     * GET SUPERVISOR LIST ASSOCIATED WITH EMPLOYEE
+     * @param id
+     * @param page
+     * @param size
+     * @return ResponseEntity<StandardResponse>
+     */
+    @GetMapping("/supervisor")
+    public ResponseEntity<StandardResponse> getSupervisorList(@RequestParam Long id,
+                                                              @RequestParam(defaultValue = "0") Integer page,
+                                                              @RequestParam(defaultValue = "10") Integer size) {
+        log.info("Fetching supervisor list with id: {}", id);
+        return new ResponseEntity<>(
+                new StandardResponse(200, "Supervisor List Fetched",
+                        employeeService.getSupervisorList(id, PageRequest.of(page, size))), HttpStatus.OK);
+    }
+
 
 }

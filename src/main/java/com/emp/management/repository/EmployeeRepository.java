@@ -1,6 +1,7 @@
 package com.emp.management.repository;
 
 import com.emp.management.dto.EmployeeDTO;
+import com.emp.management.dto.SupervisorDTO;
 import com.emp.management.entity.Employee;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -61,4 +62,17 @@ public interface EmployeeRepository extends JpaRepository<Employee, Long> {
             "AND (:lastname IS NULL OR LOWER(e.lastname) LIKE LOWER(concat('%', :lastname, '%')))")
     Page<EmployeeDTO> getEmployeeList(String city, String email, String firstname, String lastname, Pageable pageable);
 
+    /**
+     * USING JPQL QUERY TO GET SUPERVISOR LIST BY ID
+     * @param id
+     * @param pageable
+     * @return Page<SupervisorDTO>
+     */
+    @Query(" SELECT new com.emp.management.dto.SupervisorDTO(s.id, s.firstname, s.lastname, s.email, s.city,s.salary) " +
+            "FROM Employee emp " +
+            "JOIN Task t ON emp.id =t.id " +
+            "JOIN SupervisorTaskDetail std ON t.id = std.task.id " +
+            "JOIN Supervisor s ON s.id = std.supervisor.id " +
+            "WHERE emp.id = ?1 GROUP BY s.id")
+    Page<SupervisorDTO> getSupervisorList(Long id, Pageable pageable);
 }

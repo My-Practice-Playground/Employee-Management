@@ -1,6 +1,7 @@
 package com.emp.management.service.custom.impl;
 
 import com.emp.management.dto.EmployeeDTO;
+import com.emp.management.dto.SupervisorDTO;
 import com.emp.management.entity.Employee;
 import com.emp.management.entity.Vehicle;
 import com.emp.management.repository.EmployeeRepository;
@@ -14,6 +15,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
 import java.util.Optional;
@@ -59,6 +61,7 @@ public class EmployeeServiceImpl implements EmployeeService {
 
     /**
      * PERFORMS EMPLOYEE UPDATE OPERATION
+     *
      * @param data
      * @throws EmployeeNotFoundException
      */
@@ -81,6 +84,7 @@ public class EmployeeServiceImpl implements EmployeeService {
 
     /**
      * DELETE EMPLOYEE BY ID
+     *
      * @param id
      * @throws EmployeeNotFoundException
      */
@@ -104,8 +108,9 @@ public class EmployeeServiceImpl implements EmployeeService {
 
     /**
      * FIND EMPLOYEE BY ID
+     *
      * @param id
-     * @return
+     * @return EmployeeDTO
      * @throws EmployeeNotFoundException
      */
     @Override
@@ -122,11 +127,11 @@ public class EmployeeServiceImpl implements EmployeeService {
             log.error("Error: ", e);
             throw e;
         }
-
     }
 
     /**
      * FETCH ALL EMPLOYEES
+     *
      * @return
      */
     @Override
@@ -138,11 +143,11 @@ public class EmployeeServiceImpl implements EmployeeService {
             log.error("Error: ", e);
             throw e;
         }
-
     }
 
     /**
      * FETCH ALL EMPLOYEES IN EMPLOYEE DTO TYPE
+     *
      * @return
      */
     @Override
@@ -158,18 +163,37 @@ public class EmployeeServiceImpl implements EmployeeService {
 
     /**
      * FETCH EMPLOYEE LIST WITH CITY, EMAIL, FIRSTNAME, LASTNAME
+     *
      * @param city
      * @param email
      * @param firstname
      * @param lastname
      * @param pageable
-     * @return
+     * @return Page<EmployeeDTO>
      */
     @Override
     public Page<EmployeeDTO> getEmployeeList(String city, String email, String firstname, String lastname, Pageable pageable) {
         log.info("Fetching employee list with city: {}, email: {}, firstname: {}, lastname: {}", city, email, firstname, lastname);
         try {
             return employeeRepository.getEmployeeList(city, email, firstname, lastname, pageable);
+        } catch (Exception e) {
+            log.error("Error: ", e);
+            throw e;
+        }
+    }
+
+    /**
+     * FETCH SUPERVISOR LIST BY ID
+     *
+     * @param id
+     * @param pageable
+     * @return Page<SupervisorDTO>
+     */
+    @Override
+    public Page<SupervisorDTO> getSupervisorList(Long id, Pageable pageable) {
+        log.info("Fetching supervisor list with id: {}", id);
+        try {
+            return employeeRepository.getSupervisorList(id, pageable);
         } catch (Exception e) {
             log.error("Error: ", e);
             throw e;
