@@ -22,51 +22,97 @@ public class TaskServiceImpl implements TaskService {
     private final ModelMapper mapper;
     private final TaskRepository taskRepository;
 
-
+    /**
+     * Performs Task Save Operation
+     *
+     */
     @Transactional
     @Override
     public void save(TaskDTO data) {
         log.info("Task: {}", data);
 
-        taskRepository.save(mapper.map(data, Task.class));
+        try {
+            taskRepository.save(mapper.map(data, Task.class));
+        } catch (Exception e) {
+            log.error("Error: ", e);
+            throw e;
+        }
     }
 
+    /**
+     * Performs Task Update Operation
+     *
+     * @param data
+     */
     @Override
     public void update(TaskDTO data) {
         log.info("Task: {}", data);
+        try {
+            taskRepository.save(
+                    mapper.map(taskRepository.findById(data.getId())
+                            .orElseThrow(() -> new RuntimeException("Task not found for id: " + data.getId())),
+                            Task.class));
 
-        taskRepository.save(mapper.map(data, Task.class));
+            log.info("Task updated successfully");
+        } catch (Exception e) {
+            log.error("Error: ", e);
+            throw e;
+        }
     }
 
+    /**
+     * Performs Task Delete Operation
+     *
+     * @param id
+     */
     @Override
     public void delete(Long id) {
         log.info("Deleting task with id: {}", id);
 
-        Optional<Task> taskById = taskRepository.findById(id);
-        if (taskById.isPresent()) {
-            taskRepository.delete(taskById.get());
-            return;
+        try{
+            Task task = taskRepository.findById(id).orElseThrow(() -> new RuntimeException("Task not found for id: " + id));
+            taskRepository.delete(task);
+            log.info("Task deleted successfully");
+        }catch (Exception e){
+            log.error("Error: ", e);
+            throw e;
         }
-        throw new RuntimeException("Task not found for id: " + id);
-
     }
 
+    /**
+     * Fetches Task by Id
+     *
+     * @param id
+     * @return TaskDTO
+     */
     @Override
     public TaskDTO findById(Long id) {
         log.info("Fetching task with id: {}", id);
 
-        Optional<Task> taskById = taskRepository.findById(id);
-        if (taskById.isPresent()) {
-            return mapper.map(taskById.get(), TaskDTO.class);
+        try{
+            Optional<Task> taskById = taskRepository.findById(id);
+                return mapper.map(
+                        taskById.orElseThrow(() -> new RuntimeException("Task not found for id: " + id)).getId(), TaskDTO.class);
+        }catch (Exception e){
+            log.error("Error: ", e);
+            throw e;
         }
-        throw new RuntimeException("Task not found for id: " + id);
     }
 
+    /**
+     * Fetches all tasks
+     *
+     * @return List<TaskDTO>
+     */
     @Override
     public List<TaskDTO> findAll() {
         log.info("Fetching all tasks");
 
-        List<Task> taskList = taskRepository.findAll();
-        return taskList.stream().map(task -> mapper.map(task, TaskDTO.class)).collect(Collectors.toList());
+        try {
+            return taskRepository.findAll().stream().map(task -> mapper.map(task, TaskDTO.class)).collect(Collectors.toList());
+        } catch (Exception e) {
+            log.error("Error: ", e);
+            throw e;
+        }
     }
 }

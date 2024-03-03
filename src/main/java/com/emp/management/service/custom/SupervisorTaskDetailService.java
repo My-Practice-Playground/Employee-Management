@@ -2,7 +2,6 @@ package com.emp.management.service.custom;
 
 import com.emp.management.dto.SupervisorTaskDetailDTO;
 import com.emp.management.service.SuperService;
-import org.springframework.stereotype.Service;
 
 /**
  * @author Lakshan Chamoditha Perera
@@ -11,5 +10,5 @@ import org.springframework.stereotype.Service;
  * @created 2024-02-27 - 13.56
  **/
 
-public interface SupervisorTaskDetailService extends SuperService<SupervisorTaskDetailDTO,Integer> {
+public interface SupervisorTaskDetailService extends SuperService<SupervisorTaskDetailDTO, Integer> {
 }

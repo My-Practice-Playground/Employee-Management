@@ -22,9 +22,11 @@ import java.sql.Date;
 public class VehicleController {
     private final VehicleService vehicleService;
 
-/**
-SAVE VEHICLE
-**/
+    /**
+     * SAVE VEHICLE
+     * @param vehicleDTO
+     * @return ResponseEntity<StandardResponse>
+     */
     @PostMapping
     public ResponseEntity<StandardResponse> saveVehicle(@RequestBody @Valid VehicleDTO vehicleDTO) {
         log.info("Vehicle: {}", vehicleDTO);
@@ -34,9 +36,10 @@ SAVE VEHICLE
                 new StandardResponse(200, "Vehicle Saved", null), HttpStatus.CREATED);
     }
 
-/**
-GET ALL VEHICLES
-**/
+    /**
+     * GET ALL VEHICLES
+     * @return ResponseEntity<StandardResponse>
+     */
     @GetMapping
     public ResponseEntity<StandardResponse> getAllVehicles() {
         log.info("Fetching all vehicles");
@@ -46,7 +49,7 @@ GET ALL VEHICLES
     }
 
     /**
-     *
+     *FILTER VEHICLES BY ID, COLOR, MAKE, MODEL
      * @param id
      * @param color
      * @param make
@@ -64,15 +67,17 @@ GET ALL VEHICLES
             @RequestParam(name = "size",required = false,defaultValue = "10") Integer size,
             @RequestParam(name = "page", defaultValue = "0") Integer page
     ) {
-        log.info("Fetching vehicle with id, color, make, model, date: {}", id, color, make, model);
+        log.info("Fetching vehicle with id, color, make, model, date: {}, {}, {}, {}" , id, color, make, model);
 
         return new ResponseEntity<>(
                 new StandardResponse(200, "Vehicle Fetched", vehicleService.getVehicles(id,color,make,model,Pageable.ofSize(size).withPage(page))), HttpStatus.OK);
     }
 
-/*
-DELETE VEHICLE
-* */
+    /**
+     * DELETE VEHICLE BY ID
+     * @param id
+     * @return ResponseEntity<StandardResponse>
+     */
     @DeleteMapping("/{id}")
     public ResponseEntity<StandardResponse> deleteVehicle(@PathVariable Long id) {
         log.info("Deleting vehicle with id: {}", id);
