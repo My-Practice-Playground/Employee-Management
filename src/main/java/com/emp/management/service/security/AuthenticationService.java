@@ -24,9 +24,11 @@ public class AuthenticationService {
     private final JwtService jwtService;
     private final AuthenticationManager authenticationManager;
 
-/*
-SAVE USER & GENERATE TOKEN
-* */
+    /**
+     * REGISTER USER
+     * @param request
+     * @return
+     */
     public String register(RegisterRequest request) {
         log.info("register {} " + request);
 
@@ -43,10 +45,11 @@ SAVE USER & GENERATE TOKEN
         return jwtToken;
     }
 
-
-/*
-AUTHENTICATE USER
-* */
+    /**
+     * AUTHENTICATE USER
+     * @param request
+     * @return
+     */
     public AuthenticationResponse authenticate(LoginRequest request) {
         log.info("authenticate {} " + request);
 

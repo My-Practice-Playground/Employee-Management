@@ -17,6 +17,11 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface SupervisorRepository extends JpaRepository<Supervisor,Long> {
 
+    /**
+     * CHECK SUPERVISOR IF EXISTS BY EMAIL
+     * @param email
+     * @return
+     */
     Boolean existsByEmail(String email);
 
     /**

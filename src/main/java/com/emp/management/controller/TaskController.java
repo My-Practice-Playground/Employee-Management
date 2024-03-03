@@ -18,9 +18,11 @@ import org.springframework.web.bind.annotation.*;
 public class TaskController {
     private final TaskService taskService;
 
-/*
-SAVE TASK
-*/
+    /**
+     * SAVE TASK
+     * @param taskDTO
+     * @return ResponseEntity<StandardResponse>
+     */
     @PostMapping
     public ResponseEntity<StandardResponse> saveTask(@RequestBody @Valid TaskDTO taskDTO) {
         log.info("Task: {}", taskDTO);
@@ -30,9 +32,11 @@ SAVE TASK
                 new StandardResponse(200, "Task Saved", null));
     }
 
-/*
-DELETE TASK
-* */
+    /**
+     * DELETE TASK BY ID
+     * @param id
+     * @return ResponseEntity<StandardResponse>
+     */
     @DeleteMapping("/{id}")
     public ResponseEntity<StandardResponse> deleteTask(@PathVariable Long id) {
         log.info("Deleting task with id: {}", id);
@@ -42,9 +46,11 @@ DELETE TASK
                 new StandardResponse(200, "Task Deleted", null));
     }
 
-/*
-GET TASK BY ID
-* */
+    /**
+     * GET TASK BY ID
+     * @param id
+     * @return ResponseEntity<StandardResponse>
+     */
     @GetMapping("/{id}")
     public ResponseEntity<StandardResponse> getTaskById(@PathVariable Long id) {
         log.info("Fetching task with id: {}", id);
@@ -53,9 +59,11 @@ GET TASK BY ID
                 new StandardResponse(200, "Task Fetched", taskService.findById(id)));
     }
 
-/*
-GET ALL TASKS
-* */
+    /**
+     * GET ALL TASKS
+     * @return  ResponseEntity<StandardResponse>
+
+     */
 //@PreAuthorize("hasRole('USER')")
     @GetMapping
     public ResponseEntity<StandardResponse> getAllTasks() {
@@ -65,9 +73,11 @@ GET ALL TASKS
                 new StandardResponse(200, "Tasks Fetched", taskService.findAll()));
     }
 
-/*
-UPDATE TASK
-* */
+    /**
+     * UPDATE TASK
+     * @param taskDTO
+     * @return ResponseEntity<StandardResponse>
+     */
     @PutMapping
     public ResponseEntity<StandardResponse> updateTask(@RequestBody @Valid TaskDTO taskDTO) {
         log.info("Task: {}", taskDTO);

@@ -20,6 +20,14 @@ import java.io.IOException;
 @Slf4j
 @Component
 public class AuthEntryPoint implements AuthenticationEntryPoint {
+    /**
+     * COMMENCE METHOD TO HANDLE UNAUTHORIZED REQUESTS
+     * @param request
+     * @param response
+     * @param authException
+     * @throws IOException
+     * @throws ServletException
+     */
     @Override
     public void commence(HttpServletRequest request, HttpServletResponse response, AuthenticationException authException) throws IOException, ServletException {
         log.error("Unauthorized Error : {}", authException.getMessage());

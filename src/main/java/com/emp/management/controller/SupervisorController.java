@@ -23,9 +23,11 @@ import org.springframework.web.bind.annotation.*;
 public class SupervisorController {
     private final SupervisorService supervisorService;
 
-    /*
-    SAVE SUPERVISOR
-    * */
+    /**
+     * SAVE SUPERVISOR
+     * @param supervisorDTO
+     * @return
+     */
     @PostMapping
     public ResponseEntity<StandardResponse> saveSupervisor(@RequestBody SupervisorDTO supervisorDTO) {
         supervisorService.save(supervisorDTO);
@@ -33,27 +35,32 @@ public class SupervisorController {
                 new StandardResponse(HttpStatus.CREATED.value(), "Supervisor Saved", ""), HttpStatus.OK);
     }
 
-    /*
-    GET ALL SUPERVISORS
-    * */
+    /**
+     * GET ALL SUPERVISORS
+     * @return
+     */
     @GetMapping
     public ResponseEntity<StandardResponse> getAllSupervisors() {
         return new ResponseEntity<>(
                 new StandardResponse(HttpStatus.OK.value(), "Supervisor List Fetched", supervisorService.findAll()), HttpStatus.OK);
     }
 
-    /*
-    GET SUPERVISOR BY ID
-    * */
+    /**
+     * GET SUPERVISOR BY ID
+     * @param id
+     * @return
+     */
     @GetMapping("/{id}")
     public ResponseEntity<StandardResponse> getSupervisorById(@PathVariable Long id) {
         return new ResponseEntity<>(
                 new StandardResponse(HttpStatus.OK.value(), "Supervisor Fetched", supervisorService.findById(id)), HttpStatus.OK);
     }
 
-    /*
-    UPDATE SUPERVISOR
-    * */
+    /**
+     * UPDATE SUPERVISOR
+     * @param supervisorDTO
+     * @return
+     */
     @PutMapping("/{id}")
     public ResponseEntity<StandardResponse> updateSupervisor(@RequestBody SupervisorDTO supervisorDTO) {
         supervisorService.update(supervisorDTO);
@@ -61,9 +68,11 @@ public class SupervisorController {
                 new StandardResponse(HttpStatus.OK.value(), "Supervisor Updated", ""), HttpStatus.OK);
     }
 
-    /*
-    DELETE SUPERVISOR
-    * */
+    /**
+     * DELETE SUPERVISOR BY ID
+     * @param id
+     * @return
+     */
     @DeleteMapping("/{id}")
     public ResponseEntity<StandardResponse> deleteSupervisor(@RequestParam Long id) {
         supervisorService.delete(id);
@@ -71,6 +80,17 @@ public class SupervisorController {
                 new StandardResponse(HttpStatus.OK.value(), "Supervisor Deleted", ""), HttpStatus.OK);
     }
 
+    /**
+     * GET SUPERVISOR BY FILTER
+     * @param city
+     * @param email
+     * @param firstname
+     * @param lastname
+     * @param salary
+     * @param page
+     * @param size
+     * @return ResponseEntity<StandardResponse>
+     */
     @GetMapping("/filter")
     public ResponseEntity<StandardResponse> getSupervisorByFilter(
             @RequestParam(name = "city", required = false) String city,

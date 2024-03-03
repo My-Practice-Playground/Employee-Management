@@ -28,7 +28,7 @@ public class EmployeeServiceImpl implements EmployeeService {
 
     /**
      * Performs Employee Save Operation
-     **/
+     */
     @Transactional
     @Override
     public void save(EmployeeDTO data) throws RuntimeException {
@@ -57,7 +57,11 @@ public class EmployeeServiceImpl implements EmployeeService {
         }
     }
 
-
+    /**
+     * PERFORMS EMPLOYEE UPDATE OPERATION
+     * @param data
+     * @throws EmployeeNotFoundException
+     */
     @Transactional
     @Override
     public void update(EmployeeDTO data) throws EmployeeNotFoundException {
@@ -75,6 +79,11 @@ public class EmployeeServiceImpl implements EmployeeService {
         }
     }
 
+    /**
+     * DELETE EMPLOYEE BY ID
+     * @param id
+     * @throws EmployeeNotFoundException
+     */
     @Transactional
     @Override
     public void delete(Long id) throws EmployeeNotFoundException {
@@ -93,6 +102,12 @@ public class EmployeeServiceImpl implements EmployeeService {
         }
     }
 
+    /**
+     * FIND EMPLOYEE BY ID
+     * @param id
+     * @return
+     * @throws EmployeeNotFoundException
+     */
     @Override
     public EmployeeDTO findById(Long id) throws EmployeeNotFoundException {
         log.info("Fetching employee with id: " + id);
@@ -110,6 +125,10 @@ public class EmployeeServiceImpl implements EmployeeService {
 
     }
 
+    /**
+     * FETCH ALL EMPLOYEES
+     * @return
+     */
     @Override
     public List<EmployeeDTO> findAll() {
         log.info("Fetching all employees");
@@ -122,6 +141,10 @@ public class EmployeeServiceImpl implements EmployeeService {
 
     }
 
+    /**
+     * FETCH ALL EMPLOYEES IN EMPLOYEE DTO TYPE
+     * @return
+     */
     @Override
     public List<EmployeeDTO> getAllEmployeeInEmployeeDTOType() {
         log.info("Fetching all employees in EmployeeDTO type");
@@ -133,6 +156,15 @@ public class EmployeeServiceImpl implements EmployeeService {
         }
     }
 
+    /**
+     * FETCH EMPLOYEE LIST WITH CITY, EMAIL, FIRSTNAME, LASTNAME
+     * @param city
+     * @param email
+     * @param firstname
+     * @param lastname
+     * @param pageable
+     * @return
+     */
     @Override
     public Page<EmployeeDTO> getEmployeeList(String city, String email, String firstname, String lastname, Pageable pageable) {
         log.info("Fetching employee list with city: {}, email: {}, firstname: {}, lastname: {}", city, email, firstname, lastname);

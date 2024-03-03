@@ -15,10 +15,11 @@ import static org.springframework.http.HttpStatus.NOT_FOUND;
 @Slf4j
 @ControllerAdvice
 public class RestExceptionHandler {
-
-/*
-GLOBAL EXCEPTION HANDLER FOR METHOD ARGUMENT NOT VALID EXCEPTION
- */
+    /**
+     * GLOBAL EXCEPTION HANDLER FOR METHOD ARGUMENT NOT VALID EXCEPTION
+     * @param e
+     * @return
+     */
     @ExceptionHandler
     public ResponseEntity<StandardResponse> handleException(MethodArgumentNotValidException e) {
        log.info(e.getBindingResult().getFieldError().getDefaultMessage());
@@ -29,9 +30,11 @@ GLOBAL EXCEPTION HANDLER FOR METHOD ARGUMENT NOT VALID EXCEPTION
         );
     }
 
-/*
-GLOBAL EXCEPTION HANDLER FOR RUNTIME EXCEPTION
-* */
+    /**
+     * GLOBAL EXCEPTION HANDLER FOR RUNTIME EXCEPTION
+     * @param e
+     * @return
+     */
     @ExceptionHandler
     public ResponseEntity<StandardResponse> handleException(RuntimeException e) {
         log.info(e.getMessage());
@@ -40,9 +43,11 @@ GLOBAL EXCEPTION HANDLER FOR RUNTIME EXCEPTION
                 new StandardResponse(400, e.getMessage(), null), BAD_REQUEST);
     }
 
-/*
-GLOBAL EXCEPTION HANDLER FOR VEHICLE NOT FOUND EXCEPTION
-* */
+    /**
+     * GLOBAL EXCEPTION HANDLER FOR VEHICLE NOT FOUND EXCEPTION
+     * @param e
+     * @return
+     */
     @ExceptionHandler
     public ResponseEntity<StandardResponse> handleException(VehicleNotFoundException e) {
         log.info(e.getMessage());

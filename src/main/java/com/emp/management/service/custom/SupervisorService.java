@@ -14,5 +14,16 @@ import org.springframework.data.domain.Page;
 
 public interface SupervisorService extends SuperService<SupervisorDTO, Long> {
 
+    /**
+     * GET SUPERVISORS BY CITY, EMAIL, FIRSTNAME, LASTNAME, SALARY
+     * @param city
+     * @param email
+     * @param firstname
+     * @param lastname
+     * @param salary
+     * @param page
+     * @param size
+     * @return
+     */
     Page<SupervisorDTO> getSupervisors(String city, String email, String firstname, String lastname, Double salary, Integer page, Integer size);
 }

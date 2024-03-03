@@ -22,9 +22,11 @@ import org.springframework.web.bind.annotation.*;
 public class SupervisorTaskDetailController {
     private final SupervisorTaskDetailService supervisorTaskDetailService;
 
-/*
-SAVE SUPERVISOR TASK DETAIL
-* */
+    /**
+     * SAVE SUPERVISOR TASK DETAIL
+     * @param supervisorTaskDetailDTO
+     * @return ResponseEntity<StandardResponse>
+     */
     @PostMapping
     public ResponseEntity<StandardResponse> saveTask(@RequestBody SupervisorTaskDetailDTO supervisorTaskDetailDTO) {
         log.info("Task: {}", supervisorTaskDetailDTO);
@@ -33,9 +35,11 @@ SAVE SUPERVISOR TASK DETAIL
         return ResponseEntity.ok(new StandardResponse(200, "Task Saved", null));
     }
 
-/*
-UPDATE SUPERVISOR TASK DETAIL
-* */
+    /**
+     * DELETE SUPERVISOR TASK DETAIL
+     * @param id
+     * @return ResponseEntity<StandardResponse>
+     */
     @DeleteMapping("/{id}")
     public ResponseEntity<StandardResponse> deleteTask(@PathVariable Integer id) {
         log.info("Deleting task with id: {}", id);
@@ -44,9 +48,11 @@ UPDATE SUPERVISOR TASK DETAIL
         return ResponseEntity.ok(new StandardResponse(200, "Task Deleted", null));
     }
 
-/*
-GET SUPERVISOR TASK DETAIL BY ID
-* */
+    /**
+     * GET SUPERVISOR TASK DETAIL BY ID
+     * @param id
+     * @return ResponseEntity<StandardResponse>
+     */
     @GetMapping("/{id}")
     public ResponseEntity<StandardResponse> getTaskById(@PathVariable Integer id) {
         log.info("Fetching task with id: {}", id);
@@ -54,9 +60,10 @@ GET SUPERVISOR TASK DETAIL BY ID
         return ResponseEntity.ok(new StandardResponse(200, "Task Fetched", supervisorTaskDetailService.findById(id)));
     }
 
-/*
-GET ALL SUPERVISOR TASK DETAIL
-* */
+    /**
+     * GET ALL SUPERVISOR TASK DETAIL
+     * @return ResponseEntity<StandardResponse>
+     */
     @GetMapping
     public ResponseEntity<StandardResponse> getAllTasks() {
         log.info("Fetching all tasks");

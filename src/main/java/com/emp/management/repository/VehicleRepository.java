@@ -15,14 +15,15 @@ import java.util.Optional;
 public interface VehicleRepository extends JpaRepository<Vehicle, Long> {
 
     /**
-     * @return Page of VehicleDTO
+     * FIND ALL VEHICLES
+     * @return List of VehicleDTO
      * @For Filtering Vehicles
      */
     @Query("SELECT new com.emp.management.dto.VehicleDTO(v.id,v.model,v.manufactureDate,v.make,v.color) FROM Vehicle v")
     List<VehicleDTO> findAllVehicles();
 
     /**
-     *
+     * FIND VEHICLE BY EMPLOYEE ID
      * @param id
      * @return Vehicle Entity
      * @for Filter vehicle by Employee Id
@@ -37,7 +38,7 @@ public interface VehicleRepository extends JpaRepository<Vehicle, Long> {
      * @return Page of Vehicles
      * @For Filtering Vehicles from make and color
      */
-    @Query("SELECT new com.emp.management.dto.VehicleDTO(v.id, v.make, v.manufactureDate, v.model, v.color) " +
+    @Query(" SELECT new com.emp.management.dto.VehicleDTO(v.id, v.make, v.manufactureDate, v.model, v.color) " +
             "FROM Vehicle v " +
             "WHERE " +
             "(:make IS NULL OR LOWER(v.make) LIKE LOWER(concat('%', :make, '%'))) " +

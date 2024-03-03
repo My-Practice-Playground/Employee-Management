@@ -18,12 +18,11 @@ import java.util.stream.Collectors;
 @Service
 @RequiredArgsConstructor
 public class TaskServiceImpl implements TaskService {
-
     private final ModelMapper mapper;
     private final TaskRepository taskRepository;
 
     /**
-     * Performs Task Save Operation
+     * PERFORMS TASK SAVE OPERATION
      *
      */
     @Transactional
@@ -40,7 +39,7 @@ public class TaskServiceImpl implements TaskService {
     }
 
     /**
-     * Performs Task Update Operation
+     * PERFORMS TASK UPDATE OPERATION
      *
      * @param data
      */
@@ -61,7 +60,7 @@ public class TaskServiceImpl implements TaskService {
     }
 
     /**
-     * Performs Task Delete Operation
+     * PERFORMS TASK DELETE OPERATION
      *
      * @param id
      */
@@ -80,7 +79,7 @@ public class TaskServiceImpl implements TaskService {
     }
 
     /**
-     * Fetches Task by Id
+     * FETCHES TASK BY ID
      *
      * @param id
      * @return TaskDTO
@@ -100,7 +99,7 @@ public class TaskServiceImpl implements TaskService {
     }
 
     /**
-     * Fetches all tasks
+     * FETCHES ALL TASKS
      *
      * @return List<TaskDTO>
      */

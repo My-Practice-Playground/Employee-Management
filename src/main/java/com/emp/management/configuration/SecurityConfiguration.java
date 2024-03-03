@@ -26,9 +26,12 @@ public class SecurityConfiguration {
     private  final JwtAuthenticationFilter jwtAuthenticationFilter;
     private final AuthEntryPoint unauthorizedHandler;
 
-/*
-SECURITY FILTER CHAIN
-**/
+    /**
+     * SECURITY FILTER CHAIN
+     * @param http
+     * @return
+     * @throws Exception
+     */
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         log.info("SecurityFilterChain {} ");

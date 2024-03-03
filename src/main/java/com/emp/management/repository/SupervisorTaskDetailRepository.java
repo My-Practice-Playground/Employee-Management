@@ -10,8 +10,6 @@ import org.springframework.stereotype.Repository;
  * @createdBy IntelliJ IDEA
  * @created 2024-02-27 - 13.55
  **/
-
-
 @Repository
 public interface SupervisorTaskDetailRepository extends JpaRepository<SupervisorTaskDetail, Integer> {
 }

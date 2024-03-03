@@ -24,7 +24,9 @@ public class AuthenticationController {
 
     /**
      * REGISTER USER
-     **/
+     * @param request
+     * @return ResponseEntity<StandardResponse>
+     */
     @PostMapping("/register")
     public ResponseEntity<StandardResponse> register(@RequestBody RegisterRequest request) {
         log.info("register {} " + request);
@@ -47,8 +49,10 @@ public class AuthenticationController {
     }
 
     /**
-     * LOGIN
-     **/
+     * LOGIN USER AND GENERATE TOKEN
+     * @param request
+     * @return
+     */
     @PostMapping("/login")
     public ResponseEntity<AuthenticationResponse> login(@RequestBody LoginRequest request) {
         log.info("login {} " + request);
