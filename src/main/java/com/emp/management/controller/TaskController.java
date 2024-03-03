@@ -59,7 +59,6 @@ public class TaskController {
     /**
      * GET ALL TASKS
      * @return  ResponseEntity<StandardResponse>
-
      */
 //@PreAuthorize("hasRole('USER')")
     @GetMapping
@@ -84,18 +83,31 @@ public class TaskController {
                 new StandardResponse(200, "Task Updated", null));
     }
 
+    /**
+     * FILTER TASKS BY DESCRIPTION, NAME, NOTES, OS and STATUS
+     * @param description
+     * @param name
+     * @param notes
+     * @param os
+     * @param status
+     * @param page
+     * @param size
+     * @return
+     */
     @GetMapping("/filter")
-    public ResponseEntity<StandardResponse> getTaskList(@RequestParam(required = false) String description,
-                                                        @RequestParam(required = false) String name,
-                                                        @RequestParam(required = false) String notes,
-                                                        @RequestParam(required = false) String os,
-                                                        @RequestParam(required = false) String status,
-                                                        @RequestParam(defaultValue = "0") Integer page,
-                                                        @RequestParam(defaultValue = "10") Integer size) {
+    public ResponseEntity<StandardResponse> getTaskList(
+            @RequestParam(required = false) String description,
+            @RequestParam(required = false) String name,
+            @RequestParam(required = false) String notes,
+            @RequestParam(required = false) String os,
+            @RequestParam(required = false) String status,
+            @RequestParam(defaultValue = "0") Integer page,
+            @RequestParam(defaultValue = "10") Integer size) {
         log.info("Fetching task list");
 
         return ResponseEntity.ok(
-                new StandardResponse(200, "Task List Fetched", taskService.getTaskList(description, name, notes, os, status, page, size)));
+                new StandardResponse(200, "Task List Fetched",
+                        taskService.getTaskList(description, name, notes, os, status, page, size)));
     }
 
 

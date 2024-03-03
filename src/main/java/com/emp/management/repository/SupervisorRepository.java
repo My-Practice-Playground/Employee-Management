@@ -34,7 +34,8 @@ public interface SupervisorRepository extends JpaRepository<Supervisor,Long> {
      * @param pageable
      * @return Page of SupervisorDTO
      */
-    @Query("SELECT new com.emp.management.dto.SupervisorDTO(s.id,s.email,s.firstname,s.lastname,s.city,s.salary) FROM Supervisor s " +
+    @Query("SELECT new com.emp.management.dto.SupervisorDTO(s.id,s.email,s.firstname,s.lastname,s.city,s.salary) " +
+            "FROM Supervisor s " +
            "WHERE " +
            "(?1 IS NULL OR LOWER(s.city) LIKE LOWER(concat('%', ?1, '%'))) " +
            "AND (?2 IS NULL OR LOWER(s.email) LIKE LOWER(concat('%', ?2, '%'))) " +

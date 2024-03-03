@@ -70,7 +70,8 @@ public class VehicleController {
         log.info("Fetching vehicle with id, color, make, model, date: {}, {}, {}, {}" , id, color, make, model);
 
         return new ResponseEntity<>(
-                new StandardResponse(200, "Vehicle Fetched", vehicleService.getVehicles(id,color,make,model,Pageable.ofSize(size).withPage(page))), HttpStatus.OK);
+                new StandardResponse(200, "Vehicle Fetched",
+                        vehicleService.getVehicles(id,color,make,model,Pageable.ofSize(size).withPage(page))), HttpStatus.OK);
     }
 
     /**

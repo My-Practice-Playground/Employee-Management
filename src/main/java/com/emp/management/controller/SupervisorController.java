@@ -102,8 +102,7 @@ public class SupervisorController {
             @RequestParam(name = "size", defaultValue = "10") Integer size
     ) {
         return new ResponseEntity<>(
-                new StandardResponse(HttpStatus.OK.value(), "Supervisor Fetched", supervisorService.getSupervisors(city, email, firstname, lastname, salary, page, size)), HttpStatus.OK);
+                new StandardResponse(HttpStatus.OK.value(), "Supervisor Fetched",
+                        supervisorService.getSupervisors(city, email, firstname, lastname, salary, page, size)), HttpStatus.OK);
     }
-
-
 }

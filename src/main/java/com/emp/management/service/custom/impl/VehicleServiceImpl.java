@@ -23,6 +23,10 @@ public class VehicleServiceImpl implements VehicleService {
     private final ModelMapper mapper;
     private final VehicleRepository vehicleRepository;
 
+    /**
+     * SAVE VEHICLE
+     * @param data
+     */
     @Transactional
     @Override
     public void save(VehicleDTO data) {
@@ -35,11 +39,20 @@ public class VehicleServiceImpl implements VehicleService {
         }
     }
 
+    /**
+     * UPDATE VEHICLE
+     * @param data
+     */
     @Override
     public void update(VehicleDTO data) {
         throw new RuntimeException("Sorry update method not implemented yet");
     }
 
+    /**
+     * DELETE VEHICLE BY ID
+     * @param id
+     * @throws VehicleNotFoundException
+     */
     @Override
     public void delete(Long id) throws VehicleNotFoundException {
         log.info("Deleting vehicle with id: {}", id);
@@ -54,6 +67,12 @@ public class VehicleServiceImpl implements VehicleService {
         }
     }
 
+    /**
+     * FIND VEHICLE BY ID
+     * @param id
+     * @return
+     * @throws VehicleNotFoundException
+     */
     @Override
     public VehicleDTO findById(Long id) throws VehicleNotFoundException {
         log.info("Fetching vehicle with id: {}", id);
@@ -75,20 +94,29 @@ public class VehicleServiceImpl implements VehicleService {
         }
     }
 
+    /**
+     * FIND ALL VEHICLES
+     * @return List<VehicleDTO>
+     */
     @Override
     public List<VehicleDTO> findAll() {
         log.info("Fetching all vehicles");
-        return vehicleRepository.findAllVehicles();
+        try{
+            return vehicleRepository.findAllVehicles();
+        }catch (Exception e){
+            log.error("Error ",e.getCause());
+            throw e;
+        }
     }
 
     /**
+     * FILTER VEHICLES BY ID, COLOR, MAKE and MODEL
      * @param id
      * @param color
      * @param make
      * @param model
      * @param pageable
      * @return Page<VehicleDTO>
-     * @For fetching vehicles by make, color, model
      */
     @Override
     public Page<VehicleDTO> getVehicles(String id, String color, String make, String model, Pageable pageable) {

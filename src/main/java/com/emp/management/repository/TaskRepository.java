@@ -31,5 +31,4 @@ public interface TaskRepository extends JpaRepository<Task, Long> {
     )
     Page<TaskDTO> getTaskList(String description, String name, String notes, String os, String status, Pageable pageable);
 
-
 }
