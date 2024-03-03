@@ -1,6 +1,5 @@
 package com.emp.management.service.security;
 
-
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
@@ -20,18 +19,32 @@ import java.util.function.Function;
 @Slf4j
 public class JwtService {
 
+    /**
+     * SECRET KEY
+     */
     @Value("${JWT_SECRET_KEY}")
     private String SECRET_KEY;
 
-    /*
-    GETTING THE SECRET KEY
-    * */
+    /**
+     * GETTING THE SECRET KEY
+     * @return Key
+     */
     private Key getSignKey() {
         log.info("Getting the secret key");
 
         return Keys.hmacShaKeyFor(Decoders.BASE64.decode(SECRET_KEY));
     }
 
+    /**
+     * EXTRACTING CLAIM FROM THE TOKEN
+     * @param token
+     * @param claimsResolver
+     * @return
+     * @param <T>
+     * @throws MalformedJwtException
+     * @throws SignatureException
+     * @throws ExpiredJwtException
+     */
     public <T> T extractClaim(String token, Function<Claims, T> claimsResolver) throws MalformedJwtException, SignatureException, ExpiredJwtException {
         log.info("Extracting claim from the token");
 
@@ -39,18 +52,28 @@ public class JwtService {
         return claimsResolver.apply(claims);
     }
 
-    /*
-    EXTRACTING USERNAME FROM THE TOKEN
-    **/
+    /**
+     * EXTRACTING USERNAME FROM THE TOKEN
+     * @param token
+     * @return
+     * @throws MalformedJwtException
+     * @throws SignatureException
+     * @throws ExpiredJwtException
+     */
     public String extractUsername(String token) throws MalformedJwtException, SignatureException, ExpiredJwtException {
         log.info("Extracting username from the token");
 
         return extractClaim(token, Claims::getSubject);
     }
 
-    /*
-EXTRACTING ALL CLAIMS FROM THE TOKEN
-* */
+    /**
+     * EXTRACTING ALL CLAIMS FROM THE TOKEN
+     * @param token
+     * @return
+     * @throws MalformedJwtException
+     * @throws SignatureException
+     * @throws ExpiredJwtException
+     */
     private Claims extractAllClaims(String token) throws MalformedJwtException, SignatureException, ExpiredJwtException {
         log.info("Extracting all claims from the token");
 
@@ -61,10 +84,12 @@ EXTRACTING ALL CLAIMS FROM THE TOKEN
                 .getBody();
     }
 
-
-    /*
-    GENERATE TOKEN WITH ALL CLAIMS AND USER DETAILS
-    * */
+    /**
+     * GENERATE TOKEN WITH ALL CLAIMS AND USER DETAILS
+     * @param extraClaims
+     * @param userDetails
+     * @return String token
+     */
     public String generateToken(Map<String, Object> extraClaims, UserDetails userDetails) {
         log.info("Generating token with all claims and user details");
 
@@ -77,18 +102,23 @@ EXTRACTING ALL CLAIMS FROM THE TOKEN
                 .signWith(getSignKey(), SignatureAlgorithm.HS256).compact();
     }
 
-    /*
-    GENERATE TOKEN WITH USER DETAILS
-    **/
+    /**
+     * GENERATE TOKEN WITH USER DETAILS
+     * @param userDetails
+     * @return String token
+     */
     public String generateToken(UserDetails userDetails) {
         log.info("generateToken(UserDetails userDetails) : Generating token with user details");
 
         return generateToken(new HashMap<>(), userDetails);
     }
 
-    /*
-    VALIDATE TOKEN
-    **/
+    /**
+     * VALIDATE TOKEN
+     * @param token
+     * @param userDetails
+     * @return Boolean
+     */
     public Boolean validateToken(String token, UserDetails userDetails){
         log.info("validateToken {} : validating token");
 
@@ -111,9 +141,10 @@ EXTRACTING ALL CLAIMS FROM THE TOKEN
     }
 
 
-   /* *//*
-    EXTRACTING EXPIRATION DATE FROM THE TOKEN
-    **//*
+    /**
+     * EXTRACTING EXPIRATION DATE FROM THE TOKEN
+     */
+    /*
     private boolean isTokenExpired(String token) {
         log.info("isTokenExpired() : Extracting expiration date from the token");
 
