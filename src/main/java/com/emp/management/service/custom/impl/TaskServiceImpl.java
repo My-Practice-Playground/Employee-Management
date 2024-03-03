@@ -7,6 +7,8 @@ import com.emp.management.service.custom.TaskService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -100,17 +102,37 @@ public class TaskServiceImpl implements TaskService {
 
     /**
      * FETCHES ALL TASKS
-     *
      * @return List<TaskDTO>
      */
     @Override
     public List<TaskDTO> findAll() {
         log.info("Fetching all tasks");
-
         try {
             return taskRepository.findAll().stream().map(task -> mapper.map(task, TaskDTO.class)).collect(Collectors.toList());
         } catch (Exception e) {
             log.error("Error: ", e);
+            throw e;
+        }
+    }
+
+    /**
+     * GET TASKS BY DESCRIPTION, NAME, NOTES, OS and STATUS
+     * @param description
+     * @param name
+     * @param notes
+     * @param os
+     * @param status
+     * @param page
+     * @param size
+     * @return Page<Task>
+     */
+    @Override
+    public Page<TaskDTO> getTaskList(String description, String name, String notes, String os, String status, Integer page, Integer size) {
+        log.info("Fetching tasks by description: {}, name: {}, notes: {}, os: {}, status: {}", description, name, notes, os, status);
+        try {
+            return taskRepository.getTaskList(description, name, notes, os, status, PageRequest.of(page, size));
+        } catch (Exception e) {
+            log.error("Error: ", e.getMessage());
             throw e;
         }
     }

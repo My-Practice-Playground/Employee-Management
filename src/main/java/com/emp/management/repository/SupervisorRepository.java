@@ -25,6 +25,7 @@ public interface SupervisorRepository extends JpaRepository<Supervisor,Long> {
     Boolean existsByEmail(String email);
 
     /**
+     * FIND SUPERVISOR BY city, email, firstname, lastname and salary
      * @param city
      * @param email
      * @param firstname

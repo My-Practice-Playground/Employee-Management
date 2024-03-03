@@ -5,6 +5,7 @@ import jakarta.validation.constraints.Pattern;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.RequiredArgsConstructor;
 
 @Data
 @AllArgsConstructor
@@ -23,5 +24,14 @@ public class TaskDTO {
     private String os;
 
     private EmployeeDTO employee;
+
+   public TaskDTO(Long id, String name, String description, String status, String os) {
+        this.id = id;
+        this.name = name;
+        this.description = description;
+        this.status = status;
+        this.os = os;
+    }
+
 }
 
