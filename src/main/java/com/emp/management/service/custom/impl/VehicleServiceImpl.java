@@ -27,34 +27,41 @@ public class VehicleServiceImpl implements VehicleService {
     @Override
     public void save(VehicleDTO data) {
         log.info("Vehicle: {}", data);
-
-        Vehicle vehicle = mapper.map(data, Vehicle.class);
-        vehicleRepository.save(vehicle);
+        try {
+            vehicleRepository.save(mapper.map(data, Vehicle.class));
+        } catch (Exception e) {
+            log.error("Error: ", e);
+            throw e;
+        }
     }
 
     @Override
     public void update(VehicleDTO data) {
-
+        throw new RuntimeException("Sorry update method not implemented yet");
     }
 
     @Override
     public void delete(Long id) throws VehicleNotFoundException {
         log.info("Deleting vehicle with id: {}", id);
-
-        if (vehicleRepository.existsById(id)) {
+        try {
+            if (!vehicleRepository.existsById(id)) {
+                throw new VehicleNotFoundException("Vehicle not found");
+            }
             vehicleRepository.deleteById(id);
-            return;
+        } catch (Exception e) {
+            log.error("Error ", e.getCause());
+            throw e;
         }
-        throw new VehicleNotFoundException("Vehicle not found");
     }
 
     @Override
     public VehicleDTO findById(Long id) throws VehicleNotFoundException {
         log.info("Fetching vehicle with id: {}", id);
 
-        Optional<Vehicle> byId = vehicleRepository.findById(id);
+        try {
+            Optional<Vehicle> byId = vehicleRepository.findById(id);
+            if (!byId.isPresent()) throw new VehicleNotFoundException("Vehicle not found");
 
-        if (byId.isPresent()) {
             VehicleDTO vehicleDTO = new VehicleDTO();
             vehicleDTO.setId(byId.get().getId());
             vehicleDTO.setManufactureDate(byId.get().getManufactureDate());
@@ -62,8 +69,10 @@ public class VehicleServiceImpl implements VehicleService {
             vehicleDTO.setMake(byId.get().getMake());
             vehicleDTO.setModel(byId.get().getModel());
             return vehicleDTO;
+        } catch (Exception e) {
+            log.error("Error ", e.getCause());
+            throw e;
         }
-        throw new VehicleNotFoundException("Vehicle not found");
     }
 
     @Override
@@ -73,7 +82,6 @@ public class VehicleServiceImpl implements VehicleService {
     }
 
     /**
-     *
      * @param id
      * @param color
      * @param make
@@ -85,6 +93,11 @@ public class VehicleServiceImpl implements VehicleService {
     @Override
     public Page<VehicleDTO> getVehicles(String id, String color, String make, String model, Pageable pageable) {
         log.info("Fetching vehicle with id, color, make, model: {}, {}, {}, {}", id, color, make, model);
-        return vehicleRepository.getVehicleByMakeAndColor(color,make,model,pageable);
+       try{
+           return vehicleRepository.getVehicleByMakeAndColor(color, make, model, pageable);
+       }catch (Exception e){
+           log.error("Error ",e.getCause());
+           throw e;
+       }
     }
 }
