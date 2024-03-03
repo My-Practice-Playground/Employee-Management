@@ -73,6 +73,6 @@ public interface EmployeeRepository extends JpaRepository<Employee, Long> {
             "JOIN Task t ON emp.id =t.id " +
             "JOIN SupervisorTaskDetail std ON t.id = std.task.id " +
             "JOIN Supervisor s ON s.id = std.supervisor.id " +
-            "WHERE emp.id = ?1 GROUP BY s.id")
+            "WHERE emp.id = ?1 ")
     Page<SupervisorDTO> getSupervisorList(Long id, Pageable pageable);
 }
