@@ -11,6 +11,7 @@ import com.emp.management.util.exception.EmployeeNotFoundException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -113,6 +114,7 @@ public class EmployeeServiceImpl implements EmployeeService {
      * @return EmployeeDTO
      * @throws EmployeeNotFoundException
      */
+    @Cacheable(value = "employeeCache", key = "#id")
     @Override
     public EmployeeDTO findById(Long id) throws EmployeeNotFoundException {
         log.info("Fetching employee with id: " + id);

@@ -1,4 +1,4 @@
-package com.emp.management.configuration;
+package com.emp.management.configuration.security;
 
 
 import com.emp.management.repository.UserRepository;
