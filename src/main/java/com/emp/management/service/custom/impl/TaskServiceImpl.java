@@ -7,6 +7,9 @@ import com.emp.management.service.custom.TaskService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.CachePut;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
@@ -45,6 +48,7 @@ public class TaskServiceImpl implements TaskService {
      *
      * @param data
      */
+    @CachePut(value = "tasks", key = "#data.id")
     @Override
     public void update(TaskDTO data) {
         log.info("Task: {}", data);
@@ -66,6 +70,8 @@ public class TaskServiceImpl implements TaskService {
      *
      * @param id
      */
+    @CacheEvict(value = "tasks", key = "#id")
+    @Transactional
     @Override
     public void delete(Long id) {
         log.info("Deleting task with id: {}", id);
@@ -86,6 +92,7 @@ public class TaskServiceImpl implements TaskService {
      * @param id
      * @return TaskDTO
      */
+    @Cacheable(value = "tasks", key = "#id")
     @Override
     public TaskDTO findById(Long id) {
         log.info("Fetching task with id: {}", id);
@@ -104,6 +111,7 @@ public class TaskServiceImpl implements TaskService {
      * FETCHES ALL TASKS
      * @return List<TaskDTO>
      */
+    @CacheEvict(value = "tasks", allEntries = true)
     @Override
     public List<TaskDTO> findAll() {
         log.info("Fetching all tasks");

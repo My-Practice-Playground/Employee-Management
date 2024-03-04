@@ -8,6 +8,9 @@ import com.emp.management.util.exception.VehicleNotFoundException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.CachePut;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -43,6 +46,7 @@ public class VehicleServiceImpl implements VehicleService {
      * UPDATE VEHICLE
      * @param data
      */
+    @CachePut(value = "vehicles", key = "#data.id")
     @Override
     public void update(VehicleDTO data) {
         throw new RuntimeException("Sorry update method not implemented yet");
@@ -73,6 +77,7 @@ public class VehicleServiceImpl implements VehicleService {
      * @return
      * @throws VehicleNotFoundException
      */
+    @Cacheable(value = "vehicles", key = "#id")
     @Override
     public VehicleDTO findById(Long id) throws VehicleNotFoundException {
         log.info("Fetching vehicle with id: {}", id);
@@ -98,6 +103,7 @@ public class VehicleServiceImpl implements VehicleService {
      * FIND ALL VEHICLES
      * @return List<VehicleDTO>
      */
+    @CacheEvict(value = "vehicles", allEntries = true)
     @Override
     public List<VehicleDTO> findAll() {
         log.info("Fetching all vehicles");
