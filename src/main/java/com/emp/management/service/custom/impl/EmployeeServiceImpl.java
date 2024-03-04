@@ -11,6 +11,8 @@ import com.emp.management.util.exception.EmployeeNotFoundException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -55,7 +57,7 @@ public class EmployeeServiceImpl implements EmployeeService {
             employeeRepository.save(employee);
             log.info("Employee saved ");
         } catch (Exception e) {
-            log.error("Error: ", e);
+            log.error("Error: ", e.getMessage());
             throw e;
         }
     }
@@ -66,6 +68,7 @@ public class EmployeeServiceImpl implements EmployeeService {
      * @param data
      * @throws EmployeeNotFoundException
      */
+    @CachePut(value = "employees", key = "#data.id")
     @Transactional
     @Override
     public void update(EmployeeDTO data) throws EmployeeNotFoundException {
@@ -78,7 +81,7 @@ public class EmployeeServiceImpl implements EmployeeService {
             employeeRepository.save(employee);
             log.info("Employee updated: " + employee);
         } catch (Exception e) {
-            log.error("Error: ", e);
+            log.error("Error: ", e.getMessage());
             throw e;
         }
     }
@@ -102,7 +105,7 @@ public class EmployeeServiceImpl implements EmployeeService {
             }
             throw new EmployeeNotFoundException("Employee not found");
         } catch (Exception e) {
-            log.error("Error: ", e);
+            log.error("Error: ", e.getMessage());
             throw e;
         }
     }
@@ -114,7 +117,7 @@ public class EmployeeServiceImpl implements EmployeeService {
      * @return EmployeeDTO
      * @throws EmployeeNotFoundException
      */
-    @Cacheable(value = "employeeCache", key = "#id")
+    @Cacheable(value = "employees", key = "#id")
     @Override
     public EmployeeDTO findById(Long id) throws EmployeeNotFoundException {
         log.info("Fetching employee with id: " + id);
@@ -126,7 +129,7 @@ public class EmployeeServiceImpl implements EmployeeService {
             }
             throw new EmployeeNotFoundException("Employee not found");
         } catch (Exception e) {
-            log.error("Error: ", e);
+            log.error("Error: ", e.getMessage());
             throw e;
         }
     }
@@ -137,6 +140,7 @@ public class EmployeeServiceImpl implements EmployeeService {
      * @return
      */
     @Override
+    @CacheEvict(value = "employees", allEntries = true)
     public List<EmployeeDTO> findAll() {
         log.info("Fetching all employees");
         try {

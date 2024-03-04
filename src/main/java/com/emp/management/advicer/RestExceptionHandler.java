@@ -40,7 +40,7 @@ public class RestExceptionHandler {
         log.info(e.getMessage());
 
         return new ResponseEntity<>(
-                new StandardResponse(400, e.getMessage(), null), BAD_REQUEST);
+                new StandardResponse(400, e.getMessage(), e.getCause()), BAD_REQUEST);
     }
 
     /**
